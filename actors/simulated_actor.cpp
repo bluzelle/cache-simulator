@@ -1,7 +1,13 @@
 #include <actors/simulated_actor.hpp>
+#include <actors/actor_system.hpp>
 #include <assert.h>
 
 using namespace ksim;
+
+simulated_actor::simulated_actor(actor_system& system)
+        : system(system)
+{
+}
 
 void
 simulated_actor::recieve_message_at(int time, const message_t& msg)
@@ -35,7 +41,7 @@ simulated_actor::ensure_message_set_exists(int time)
 void
 simulated_actor::send(simulated_actor* target, const message_t& msg)
 {
-    target->recieve_message_at(this->last_processed_time + 2 /*TODO*/, msg);
+    this->system.send(this->last_processed_time, this, target, msg);
 }
 
 void

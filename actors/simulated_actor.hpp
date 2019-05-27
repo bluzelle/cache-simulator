@@ -5,12 +5,17 @@
 #include <map>
 #include <list>
 
+
 namespace ksim
 {
+    class actor_system;
+
     class simulated_actor
     {
         // does messaging, time steps, etc
     public:
+        simulated_actor(actor_system& system);
+
         virtual void handle_message(const ksim::message_t& msg);
 
         void process_messages_at(int time);
@@ -21,6 +26,8 @@ namespace ksim
 
     private:
         void ensure_message_set_exists(int time);
+
+        actor_system& system;
 
         int last_processed_time = 0;
 
