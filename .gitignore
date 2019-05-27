@@ -1,3 +1,5 @@
 build-output
 run
 *.swp
+.idea/
+cmake-build-debug/

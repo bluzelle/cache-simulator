@@ -3,5 +3,5 @@
 
 namespace ksim
 {
-  using message_t std::string;
+  using message_t = std::string;
 }

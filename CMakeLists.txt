@@ -37,3 +37,4 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(sim)
 add_subdirectory(actors)
+add_subdirectory(kcache)
