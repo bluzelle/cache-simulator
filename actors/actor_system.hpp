@@ -3,6 +3,8 @@
 #include <models/latency_model.hpp>
 #include <actors/simulated_actor.hpp>
 #include <set>
+#include <mutex>
+#include <shared_mutex>
 
 namespace ksim
 {

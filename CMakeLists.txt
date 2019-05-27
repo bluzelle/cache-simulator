@@ -33,6 +33,9 @@ endif(APPLE)
 
 set(CMAKE_CXX_FLAGS ${warnings})
 
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(sim)

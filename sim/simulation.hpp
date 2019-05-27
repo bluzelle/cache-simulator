@@ -1,16 +1,19 @@
-//
-// Created by isabel on 27/05/19.
-//
+#pragma once
+#include <actors/actor_system.hpp>
+#include <kcache/knode.hpp>
 
-#ifndef CACHE_SIMULATOR_SIMULATION_HPP
-#define CACHE_SIMULATOR_SIMULATION_HPP
+namespace ksim
+{
+    class simulation
+    {
+    public:
+        simulation();
 
+        void run();
 
+    private:
+        actor_system system;
+        std::list<std::unique_ptr<simulated_actor>> actors;
+    };
+}
 
-class simulation {
-
-};
-
-
-
-#endif //CACHE_SIMULATOR_SIMULATION_HPP

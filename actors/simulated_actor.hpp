@@ -16,10 +16,12 @@ namespace ksim
     public:
         simulated_actor(actor_system& system);
 
-        virtual void handle_message(const ksim::message_t& msg);
+        virtual void handle_message(const ksim::message_t& msg) = 0;
 
         void process_messages_at(int time);
         void recieve_message_at(int time, const message_t& msg);
+
+        virtual ~simulated_actor() = default;
 
     protected:
         void send(simulated_actor* target, const message_t& msg);
