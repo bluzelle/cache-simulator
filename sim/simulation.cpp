@@ -3,7 +3,9 @@
 
 using namespace ksim;
 
-simulation::simulation()
+simulation::simulation(const sim_config& config)
+    : config(config)
+    , system(this->config.latency())
 {
     std::cout << "Building simulation\n";
     for (int i=0; i<100; i++)

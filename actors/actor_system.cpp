@@ -2,6 +2,10 @@
 
 using namespace ksim;
 
+actor_system::actor_system(latency_model& latency)
+        : latency(latency)
+{}
+
 void
 actor_system::send(int send_time, simulated_actor* sender, simulated_actor* target, const ksim::message_t& message)
 {
