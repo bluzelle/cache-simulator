@@ -25,8 +25,10 @@ namespace ksim
 
         virtual ~simulated_actor() = default;
 
+        const actor_id_t id;
+
     protected:
-        void send(simulated_actor* target, const message_t& msg);
+        void send(actor_id_t target, const message_t& msg);
 
     private:
         void ensure_message_set_exists(long time);

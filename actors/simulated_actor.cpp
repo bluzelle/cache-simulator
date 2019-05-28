@@ -5,7 +5,8 @@
 using namespace ksim;
 
 simulated_actor::simulated_actor(actor_system& system)
-        : system(system)
+        : id(system.register_actor(this))
+        , system(system)
 {
 }
 
@@ -39,9 +40,9 @@ simulated_actor::ensure_message_set_exists(long time)
 }
 
 void
-simulated_actor::send(simulated_actor* target, const message_t& msg)
+simulated_actor::send(actor_id_t target, const message_t& msg)
 {
-    this->system.send(this->last_processed_time, this, target, msg);
+    this->system.send(this->last_processed_time, this->id, target, msg);
 }
 
 void

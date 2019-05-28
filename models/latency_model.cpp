@@ -3,7 +3,7 @@
 using namespace ksim;
 
 int
-latency_model::latency(const ksim::simulated_actor* a, const ksim::simulated_actor* b) const
+latency_model::latency(const ksim::actor_id_t a, const ksim::actor_id_t b) const
 {
     if (a == b)
     {

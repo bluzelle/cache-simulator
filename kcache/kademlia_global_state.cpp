@@ -1,6 +1,7 @@
 #include <kcache/kademlia_global_state.hpp>
 #include <ctime>
 #include <climits>
+#include <iostream>
 
 using namespace ksim::kcache;
 
@@ -10,10 +11,10 @@ kademlia_global_state::kademlia_global_state(const kademlia_config& config)
     this->rand.seed(std::time(nullptr));
 }
 
-std::pair<node_id, std::list<ksim::simulated_actor*>>
-kademlia_global_state::introduce(ksim::simulated_actor* registrant)
+std::pair<node_id, std::list<ksim::actor_id_t>>
+kademlia_global_state::introduce(ksim::actor_id_t registrant)
 {
-    std::list<ksim::simulated_actor*> points_of_contact;
+    std::list<ksim::actor_id_t> points_of_contact;
     if (this->known_nodes.size() > 0)
     {
         for (int i=0; i < this->config.replication_factor; i++)
@@ -26,5 +27,6 @@ kademlia_global_state::introduce(ksim::simulated_actor* registrant)
     this->known_nodes.push_back(registrant);
 
     auto id = std::uniform_int_distribution<unsigned long long>(0, ULLONG_MAX)(rand);
+    std::cout << "Mapping " << id << " to " << registrant << "\n";
     return std::make_pair(id, points_of_contact);
 }

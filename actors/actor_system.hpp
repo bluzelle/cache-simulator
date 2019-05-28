@@ -12,7 +12,10 @@ namespace ksim
     {
     public:
         actor_system(const latency_model& latency);
-        void send(long send_time, simulated_actor* sender, simulated_actor* target, const message_t& message);
+
+        actor_id_t register_actor(simulated_actor* registrant);
+
+        void send(long send_time, actor_id_t sender, actor_id_t target, const message_t& message);
 
         void run_until(long time);
 
@@ -22,6 +25,9 @@ namespace ksim
         const latency_model& latency;
 
         std::shared_mutex pending_actors_lock;
-        std::map<long, std::pair<std::set<simulated_actor*>, std::mutex>> actors_with_pending_messages;
+        std::map<long, std::pair<std::set<actor_id_t>, std::mutex>> actors_with_pending_messages;
+
+        actor_id_t next_id;
+        std::map<actor_id_t, simulated_actor*> id_map;
     };
 }

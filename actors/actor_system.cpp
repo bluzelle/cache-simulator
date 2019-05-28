@@ -7,10 +7,10 @@ actor_system::actor_system(const latency_model& latency)
 {}
 
 void
-actor_system::send(long send_time, simulated_actor* sender, simulated_actor* target, const ksim::message_t& message)
+actor_system::send(long send_time, actor_id_t sender, actor_id_t target, const ksim::message_t& message)
 {
     long dest_time = send_time + this->latency.latency(sender, target);
-    target->recieve_message_at(dest_time, message);
+    this->id_map.at(target)->recieve_message_at(dest_time, message);
 
     this->ensure_actors_set_exists(dest_time);
     std::shared_lock<std::shared_mutex> lock(this->pending_actors_lock);
@@ -46,7 +46,15 @@ actor_system::run_until(long time)
 
         for (const auto& actor : to_act)
         {
-            actor->process_messages_at(time);
+            this->id_map.at(actor)->process_messages_at(time);
         }
     }
+}
+
+actor_id_t
+actor_system::register_actor(simulated_actor* registrant)
+{
+    actor_id_t result = this->next_id++;
+    this->id_map[result] = registrant;
+    return result;
 }
