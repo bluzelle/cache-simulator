@@ -5,4 +5,4 @@ add_library(kcache STATIC
         kademlia_global_state.hpp
         )
 
-target_link_libraries(kcache actors models)
+target_link_libraries(kcache actors models proto)

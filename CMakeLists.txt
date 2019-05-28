@@ -36,6 +36,9 @@ set(CMAKE_CXX_FLAGS ${warnings})
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
+include(FindProtobuf)
+find_package(Protobuf REQUIRED)
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(sim)
@@ -43,3 +46,4 @@ add_subdirectory(actors)
 add_subdirectory(kcache)
 add_subdirectory(models)
 add_subdirectory(config)
+add_subdirectory(proto)
