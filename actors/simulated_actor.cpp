@@ -10,7 +10,7 @@ simulated_actor::simulated_actor(actor_system& system)
 }
 
 void
-simulated_actor::recieve_message_at(int time, const message_t& msg)
+simulated_actor::recieve_message_at(long time, const message_t& msg)
 {
     assert(time > this->last_processed_time);
 
@@ -23,7 +23,7 @@ simulated_actor::recieve_message_at(int time, const message_t& msg)
 }
 
 void
-simulated_actor::ensure_message_set_exists(int time)
+simulated_actor::ensure_message_set_exists(long time)
 {
     bool exists;
     {
@@ -45,7 +45,7 @@ simulated_actor::send(simulated_actor* target, const message_t& msg)
 }
 
 void
-simulated_actor::process_messages_at(int time)
+simulated_actor::process_messages_at(long time)
 {
     assert(time > this->last_processed_time);
     this->last_processed_time = time;
@@ -62,4 +62,10 @@ simulated_actor::process_messages_at(int time)
     {
         this->handle_message(msg);
     }
+}
+
+void
+simulated_actor::start()
+{
+
 }

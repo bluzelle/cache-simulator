@@ -8,7 +8,7 @@ namespace ksim
     class simulation
     {
     public:
-        simulation(const sim_config& config);
+        simulation(sim_config config);
 
         void run();
 

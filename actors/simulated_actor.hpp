@@ -18,8 +18,10 @@ namespace ksim
 
         virtual void handle_message(const ksim::message_t& msg) = 0;
 
-        void process_messages_at(int time);
-        void recieve_message_at(int time, const message_t& msg);
+        virtual void start();
+
+        void process_messages_at(long time);
+        void recieve_message_at(long time, const message_t& msg);
 
         virtual ~simulated_actor() = default;
 
@@ -27,13 +29,13 @@ namespace ksim
         void send(simulated_actor* target, const message_t& msg);
 
     private:
-        void ensure_message_set_exists(int time);
+        void ensure_message_set_exists(long time);
 
         actor_system& system;
 
-        int last_processed_time = 0;
+        long last_processed_time = 0;
 
-        std::map<int, std::pair<std::list<message_t>, std::mutex>> pending_messages;
+        std::map<long, std::pair<std::list<message_t>, std::mutex>> pending_messages;
         std::shared_mutex pending_messages_lock;
     };
 }

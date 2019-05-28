@@ -11,15 +11,17 @@ namespace ksim
     class actor_system
     {
     public:
-        actor_system(latency_model& latency);
-        void send(int send_time, simulated_actor* sender, simulated_actor* target, const message_t& message);
+        actor_system(const latency_model& latency);
+        void send(long send_time, simulated_actor* sender, simulated_actor* target, const message_t& message);
+
+        void run_until(long time);
 
     private:
-        void ensure_actors_set_exists(int time);
+        void ensure_actors_set_exists(long time);
 
-        latency_model& latency;
+        const latency_model& latency;
 
         std::shared_mutex pending_actors_lock;
-        std::map<int, std::pair<std::set<simulated_actor*>, std::mutex>> actors_with_pending_messages;
+        std::map<long, std::pair<std::set<simulated_actor*>, std::mutex>> actors_with_pending_messages;
     };
 }

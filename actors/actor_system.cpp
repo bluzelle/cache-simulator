@@ -2,14 +2,14 @@
 
 using namespace ksim;
 
-actor_system::actor_system(latency_model& latency)
+actor_system::actor_system(const latency_model& latency)
         : latency(latency)
 {}
 
 void
-actor_system::send(int send_time, simulated_actor* sender, simulated_actor* target, const ksim::message_t& message)
+actor_system::send(long send_time, simulated_actor* sender, simulated_actor* target, const ksim::message_t& message)
 {
-    int dest_time = send_time + this->latency.latency(sender, target);
+    long dest_time = send_time + this->latency.latency(sender, target);
     target->recieve_message_at(dest_time, message);
 
     this->ensure_actors_set_exists(dest_time);
@@ -19,7 +19,7 @@ actor_system::send(int send_time, simulated_actor* sender, simulated_actor* targ
 }
 
 void
-actor_system::ensure_actors_set_exists(int time)
+actor_system::ensure_actors_set_exists(long time)
 {
     bool exists;
     {
@@ -31,5 +31,22 @@ actor_system::ensure_actors_set_exists(int time)
     {
         std::lock_guard<std::shared_mutex> lock(this->pending_actors_lock);
         this->actors_with_pending_messages[time];
+    }
+}
+
+void
+actor_system::run_until(long time)
+{
+
+    while (!this->actors_with_pending_messages.empty() && this->actors_with_pending_messages.begin()->first <= time)
+    {
+        long next_tick = this->actors_with_pending_messages.begin()->first;
+        auto to_act = this->actors_with_pending_messages.at(next_tick).first;
+        this->actors_with_pending_messages.erase(next_tick);
+
+        for (const auto& actor : to_act)
+        {
+            actor->process_messages_at(time);
+        }
     }
 }

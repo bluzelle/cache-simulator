@@ -7,9 +7,10 @@ namespace ksim
     class sim_config
     {
     public:
-        int nodes_count();
-        latency_model& latency();
-    private:
-        latency_model inner_latency;
+        sim_config();
+
+        const int nodes_count = 5;
+        const long duration = 10000;
+        const latency_model latency;
     };
 }
