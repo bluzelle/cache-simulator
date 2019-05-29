@@ -27,6 +27,5 @@ kademlia_global_state::introduce(ksim::actor_id_t registrant)
     this->known_nodes.push_back(registrant);
 
     auto id = std::uniform_int_distribution<unsigned long long>(0, ULLONG_MAX)(rand);
-    std::cout << "Mapping " << id << " to " << registrant << "\n";
     return std::make_pair(id, points_of_contact);
 }
