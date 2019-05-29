@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+message kcache_message
+{
+    node_reference sender = 1;
+    uint64 rpc_id = 2;
+
+    oneof payload
+    {
+        ping ping = 3;
+        ping_response ping_response = 4;
+        find_neighborhood find_neighborhood = 5;
+        find_neighborhood_response find_neighborhood_response = 6;
+    }
+}
+
+message ping
+{
+    uint64 start_time = 1;
+}
+
+message ping_response
+{
+    uint64 start_time = 1;
+}
+
+message find_neighborhood
+{
+    uint64 target_kid = 1;
+}
+
+message find_neighborhood_response
+{
+    uint64 target_kid = 1;
+    repeated node_reference closest_nodes = 2;
+    repeated node_reference random_nodes = 3;
+}
+
+message node_reference
+{
+    uint64 kid = 1;
+    uint32 address = 2;
+}
