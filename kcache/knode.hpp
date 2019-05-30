@@ -15,7 +15,7 @@ namespace ksim::kcache
         void start() override;
 
     private:
-        node_id k_id;
+        node_id_t k_id;
         std::list<ksim::actor_id_t> introduction_points;
     };
 }

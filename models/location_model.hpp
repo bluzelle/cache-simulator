@@ -1,5 +1,5 @@
 #pragma once
-#include <random>
+#include <random/random.hpp>
 
 namespace ksim
 {
@@ -14,7 +14,7 @@ namespace ksim
         location pick_location();
 
     private:
-        std::mt19937 rand;
+        random rand;
     };
 }
 

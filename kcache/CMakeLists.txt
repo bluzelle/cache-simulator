@@ -3,6 +3,8 @@ add_library(kcache STATIC
         knode.cpp
         kademlia_global_state.cpp
         kademlia_global_state.hpp
+        kademlia_routing_table.hpp
+        kademlia_routing_table.cpp
         )
 
-target_link_libraries(kcache actors models proto)
+target_link_libraries(kcache actors models proto random)

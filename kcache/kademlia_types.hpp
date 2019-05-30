@@ -2,5 +2,5 @@
 
 namespace ksim::kcache
 {
-    using node_id = unsigned long long;
+    using node_id_t = unsigned long long;
 }
