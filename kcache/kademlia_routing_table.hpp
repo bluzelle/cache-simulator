@@ -16,6 +16,7 @@ namespace ksim::kcache
         kademlia_routing_table(node_id_t id, unsigned int bucket_size);
 
         void insert(node_id_t kid, ksim::actor_id_t, unsigned int latency);
+        bool contains(node_id_t kid, ksim::actor_id_t id);
 
         std::list<peer_record_t> k_nearest(node_id_t target);
         std::list<peer_record_t> random();

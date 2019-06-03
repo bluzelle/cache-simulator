@@ -1,6 +1,7 @@
 #include <kcache/knode.hpp>
 #include <actors/simulated_actor.hpp>
 #include <iostream>
+#include <proto/kcache.pb.h>
 
 using namespace ksim::kcache;
 
@@ -27,6 +28,25 @@ void knode::handle_message(const ksim::message_t& /*msg*/)
 
     // optionally: to accelerate the process of building the initial table, do some kind of special
     // case shortly after startup. But also that probably isn't necessary...
+}
+
+void knode::handle_ping(const kcache_ping& msg)
+{
+
+}
+
+void knode::handle_ping_response(const kcache_ping_response& msg)
+{
+
+}
+
+void knode::handle_find_neighborhood(const kcache_find_neighborhood& msg)
+{
+
+}
+
+void knode::handle_find_neighborhood_response(const kcache_find_neighborhood_response& msg)
+{
 
 }
 

@@ -72,3 +72,8 @@ std::list<kademlia_routing_table::peer_record_t> kademlia_routing_table::random(
 
     return result;
 }
+
+bool kademlia_routing_table::contains(ksim::kcache::node_id_t kid, ksim::actor_id_t id)
+{
+    return this->peers.count(std::make_pair(kid, id)) != 0;
+}
