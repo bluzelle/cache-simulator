@@ -19,9 +19,9 @@ namespace ksim::kcache
         node_id_t k_id;
         std::list<ksim::actor_id_t> introduction_points;
 
-        void knode::handle_ping(const kcache_ping& msg);
-        void knode::handle_ping_response(const kcache_ping_response& msg);
-        void knode::handle_find_neighborhood(const kcache_find_neighborhood& msg);
-        void knode::handle_find_neighborhood_response(const kcache_find_neighborhood_response& msg);
+        void handle_ping(const kcache_ping& msg);
+        void handle_ping_response(const kcache_ping_response& msg);
+        void handle_find_neighborhood(const kcache_find_neighborhood& msg);
+        void handle_find_neighborhood_response(const kcache_find_neighborhood_response& msg);
     };
 }

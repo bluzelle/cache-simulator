@@ -30,22 +30,22 @@ void knode::handle_message(const ksim::message_t& /*msg*/)
     // case shortly after startup. But also that probably isn't necessary...
 }
 
-void knode::handle_ping(const kcache_ping& msg)
+void knode::handle_ping(const kcache_ping& /*msg*/)
 {
 
 }
 
-void knode::handle_ping_response(const kcache_ping_response& msg)
+void knode::handle_ping_response(const kcache_ping_response& /*msg*/)
 {
 
 }
 
-void knode::handle_find_neighborhood(const kcache_find_neighborhood& msg)
+void knode::handle_find_neighborhood(const kcache_find_neighborhood& /*msg*/)
 {
 
 }
 
-void knode::handle_find_neighborhood_response(const kcache_find_neighborhood_response& msg)
+void knode::handle_find_neighborhood_response(const kcache_find_neighborhood_response& /*msg*/)
 {
 
 }
