@@ -1,3 +1,6 @@
 add_library(simulation STATIC simulation.cpp simulation.hpp)
+target_link_libraries(simulation actors models kcache config proto Threads::Threads)
+target_include_directories(simulation PRIVATE ${PROTO_INCLUDE_DIR})
+
 add_executable(sim main.cpp)
-target_link_libraries(sim actors models simulation kcache config Threads::Threads)
+add_dependencies(sim kcache)

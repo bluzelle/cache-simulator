@@ -40,6 +40,10 @@ include(FindProtobuf)
 find_package(Protobuf REQUIRED)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(SYSTEM ${PROTOBUF_INCLUDE_DIR})
+
+set(PROTO_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR})
+message("set proto header loc to " ${PROTO_INCLUDE_DIR})
 
 add_subdirectory(sim)
 add_subdirectory(actors)

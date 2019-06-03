@@ -8,3 +8,5 @@ add_library(kcache STATIC
         )
 
 target_link_libraries(kcache actors models proto random)
+add_dependencies(kcache proto)
+target_include_directories(kcache PRIVATE ${PROTO_INCLUDE_DIR})
