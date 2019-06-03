@@ -29,6 +29,7 @@ namespace ksim
 
     protected:
         void send(actor_id_t target, const message_t& msg);
+        long current_time();
 
     private:
         void ensure_message_set_exists(long time);

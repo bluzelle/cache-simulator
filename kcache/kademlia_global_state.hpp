@@ -12,10 +12,10 @@ namespace ksim::kcache
     public:
         kademlia_global_state(const kademlia_config& config);
         std::pair<kcache::node_id_t, std::list<actor_id_t>> introduce(actor_id_t registrant);
+        const kademlia_config& config;
 
     private:
         std::vector<actor_id_t> known_nodes;
-        const kademlia_config& config;
         ksim::random rand;
     };
 }

@@ -7,6 +7,6 @@ add_library(kcache STATIC
         kademlia_routing_table.cpp
         )
 
-target_link_libraries(kcache actors models proto random)
-add_dependencies(kcache proto)
+target_link_libraries(kcache actors models proto random ${Protobuf_LIBRARIES})
 target_include_directories(kcache PRIVATE ${PROTO_INCLUDE_DIR})
+add_dependencies(kcache proto)

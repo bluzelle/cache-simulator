@@ -70,3 +70,9 @@ simulated_actor::start()
 {
 
 }
+
+long
+simulated_actor::current_time()
+{
+    return this->last_processed_time;
+}
