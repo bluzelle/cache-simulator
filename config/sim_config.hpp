@@ -9,8 +9,9 @@ namespace ksim
     public:
         sim_config();
 
-        const int nodes_count = 5;
-        const long duration = 10000;
+        const int nodes_count = 2000;
+        const long duration = 100000;
         const latency_model latency;
+        const location_model location;
     };
 }

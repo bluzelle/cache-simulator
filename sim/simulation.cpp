@@ -6,7 +6,7 @@ using namespace ksim;
 
 simulation::simulation(sim_config config)
     : config(std::move(config))
-    , system(this->config.latency)
+    , system(this->config.latency, this->config.location)
     , global(this->algo_config)
 {
     std::cout << "Building simulation\n";
@@ -25,4 +25,5 @@ void simulation::run()
     }
 
     this->system.run_until(this->config.duration);
+    this->system.finalize();
 }

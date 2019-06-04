@@ -9,9 +9,7 @@ namespace ksim
         // x, y, z, compute distance in the x-y plane and add z as a constant extra latency
         using location = std::tuple<int, int, int>;
 
-        location_model();
-
-        location pick_location();
+        location pick_location() const;
 
     private:
         random rand;

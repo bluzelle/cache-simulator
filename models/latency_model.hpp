@@ -7,7 +7,7 @@ namespace ksim
     class latency_model
     {
     public:
-        int latency(const actor_id_t a, const actor_id_t b) const;
+        int latency(const simulated_actor& a, const simulated_actor& b) const;
     };
 
 }

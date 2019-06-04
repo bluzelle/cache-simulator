@@ -6,6 +6,7 @@ using namespace ksim;
 
 simulated_actor::simulated_actor(actor_system& system)
         : id(system.register_actor(this))
+        , location(system.location.pick_location())
         , system(system)
 {
 }
@@ -46,6 +47,12 @@ simulated_actor::send(actor_id_t target, const message_t& msg)
 }
 
 void
+simulated_actor::send_delayed(actor_id_t target, const message_t& msg, unsigned long delay)
+{
+    this->system.send(this->last_processed_time + delay, this->id, target, msg);
+}
+
+void
 simulated_actor::process_messages_at(long time)
 {
     assert(time > this->last_processed_time);
@@ -67,6 +74,12 @@ simulated_actor::process_messages_at(long time)
 
 void
 simulated_actor::start()
+{
+
+}
+
+void
+simulated_actor::finalize()
 {
 
 }

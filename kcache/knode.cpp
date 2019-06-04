@@ -10,6 +10,7 @@ knode::knode(actor_system& system, kademlia_global_state& global)
         , introduction(global.introduce(this->id))
         , k_id(this->introduction.first)
         , peers(this->k_id, global.config.replication_factor)
+        , config(global.config)
 {
 }
 
@@ -22,12 +23,22 @@ void knode::handle_message(const ksim::message_t& msg)
     {
         case kcache_message::kPing:
             this->handle_ping(parsed, parsed.ping());
+            break;
         case kcache_message::kPingResponse:
             this->handle_ping_response(parsed, parsed.ping_response());
+            break;
+        case kcache_message::kPingResponse2:
+            this->handle_ping_response_2(parsed, parsed.ping_response_2());
+            break;
         case kcache_message::kFindNeighborhood:
             this->handle_find_neighborhood(parsed, parsed.find_neighborhood());
+            break;
         case kcache_message::kFindNeighborhoodResponse:
             this->handle_find_neighborhood_response(parsed, parsed.find_neighborhood_response());
+            break;
+        case kcache_message::kTimer:
+            this->handle_timer(parsed, parsed.timer());
+            break;
         default:
             break;
     }
@@ -49,19 +60,32 @@ void knode::handle_message(const ksim::message_t& msg)
 
 void knode::handle_ping(const kcache_message& header, const kcache_ping& msg)
 {
+    //this->log("got ping from " + std::to_string(header.sender().kid()));
     kcache_message resp;
     resp.mutable_ping_response()->set_start_time(msg.start_time());
+    resp.mutable_ping_response()->set_start_time_2(this->current_time());
     this->finalize_and_send_message(header.sender().address(), resp);
 }
 
 void knode::handle_ping_response(const kcache_message& header, const kcache_ping_response& msg)
 {
+    //this->log("got ping response from " + std::to_string(header.sender().kid()));
     this->peers.insert(header.sender().kid(), header.sender().address(), this->current_time() - msg.start_time());
+
+    kcache_message resp;
+    resp.mutable_ping_response_2()->set_start_time_2(msg.start_time_2());
+    this->finalize_and_send_message(header.sender().address(), resp);
+}
+
+void knode::handle_ping_response_2(const kcache_message& header, const kcache_ping_response_2& msg)
+{
+    //this->log("got ping response 2 from " + std::to_string(header.sender().kid()));
+    this->peers.insert(header.sender().kid(), header.sender().address(), this->current_time() - msg.start_time_2());
 }
 
 void knode::handle_find_neighborhood(const kcache_message& header, const kcache_find_neighborhood& msg)
 {
-    this->ingest(header.sender());
+    //this->log("got find neighborhood from " + std::to_string(header.sender().kid()));
 
     kcache_message resp;
     resp.mutable_find_neighborhood_response()->set_target_kid(msg.target_kid());
@@ -87,11 +111,12 @@ void knode::handle_find_neighborhood(const kcache_message& header, const kcache_
 
 void knode::handle_find_neighborhood_response(const kcache_message& /*header*/, const kcache_find_neighborhood_response& msg)
 {
+    //this->log("got find neighborhood response " + std::to_string(header.sender().kid()));
     std::set<actor_id_t> dedup;
 
     auto consider = [&](const kcache_node_reference& peer)
     {
-        if (dedup.count(peer.address() == 0))
+        if (dedup.count(peer.address()) == 0)
         {
             dedup.insert(peer.address());
             this->ingest(peer);
@@ -107,7 +132,29 @@ void knode::handle_find_neighborhood_response(const kcache_message& /*header*/, 
     {
         consider(peer);
     }
+}
 
+void knode::handle_timer(const kcache_message& /*header*/, const kcache_timer& msg)
+{
+    if(msg.type() == "gossip")
+    {
+        //this->log("got gossip timer");
+        this->do_gossip();
+    }
+}
+
+void knode::do_gossip()
+{
+    for (const auto& peer : this->peers.random())
+    {
+        kcache_message request;
+        request.mutable_find_neighborhood()->set_target_kid(this->k_id);
+        this->finalize_and_send_message(peer.second, request);
+    }
+
+    kcache_message timer;
+    timer.mutable_timer()->set_type("gossip");
+    this->send_delayed(this->id, timer.SerializeAsString(), this->rand.next_int_inclusive(this->config.gossip_time_min, this->config.gossip_time_max));
 }
 
 void knode::finalize_and_send_message(actor_id_t target, kcache_message& msg)
@@ -119,8 +166,10 @@ void knode::finalize_and_send_message(actor_id_t target, kcache_message& msg)
 
 void knode::ingest(const kcache_node_reference& peer)
 {
+    //this->log("considering connection with " + std::to_string(peer.kid()));
     if (!this->peers.contains(peer.kid(), peer.address()))
     {
+        //this->log("sending ping");
         kcache_message ping;
         ping.mutable_ping()->set_start_time(this->current_time());
         this->finalize_and_send_message(peer.address(), ping);
@@ -129,11 +178,26 @@ void knode::ingest(const kcache_node_reference& peer)
 
 void knode::start()
 {
-    std::cout << "node " << this->k_id << " starting\n";
+    this->log("starting " + std::to_string(this->k_id));
     for (auto peer : this->introduction.second)
     {
         kcache_message ping;
         ping.mutable_ping()->set_start_time(this->current_time());
         this->finalize_and_send_message(peer, ping);
     }
+
+    kcache_message timer;
+    timer.mutable_timer()->set_type("gossip");
+    this->send_delayed(this->id, timer.SerializeAsString(), this->rand.next_int_inclusive(this->config.gossip_time_min, this->config.gossip_time_max));
+}
+
+void knode::finalize()
+{
+    this->log("final routing table");
+    this->log(this->peers.to_s());
+}
+
+void knode::log(const std::string& msg)
+{
+    std::cout << "[n" << this->id << "][" << this->current_time() << "] " << msg << "\n";
 }

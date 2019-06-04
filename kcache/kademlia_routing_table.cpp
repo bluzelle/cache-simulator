@@ -63,12 +63,17 @@ std::list<kademlia_routing_table::peer_record_t> kademlia_routing_table::random(
     }
 
     std::vector<std::pair<unsigned int, peer_record_t>> peers_list;
-    std::transform(this->peers.begin(), this->peers.end(), peers_list.begin(),
-            [this](const auto& peer){return std::make_pair(this->rand.next_uint(), peer);});
+    for (const auto peer : this->peers)
+    {
+        peers_list.emplace_back(this->rand.next_uint(), peer);
+    }
     std::nth_element(peers_list.begin(), peers_list.begin() + (this->bucket_size - 1), peers_list.end());
 
     std::list<peer_record_t> result;
-    std::transform(peers_list.begin(), peers_list.begin() + (this->bucket_size - 1), result.begin(), [](const auto& pair){return pair.second;});
+    for (unsigned int i = 0; i < this->bucket_size; i++)
+    {
+        result.emplace_back(peers_list.at(i).second);
+    }
 
     return result;
 }
@@ -76,4 +81,30 @@ std::list<kademlia_routing_table::peer_record_t> kademlia_routing_table::random(
 bool kademlia_routing_table::contains(ksim::kcache::node_id_t kid, ksim::actor_id_t id)
 {
     return this->peers.count(std::make_pair(kid, id)) != 0;
+}
+
+std::string kademlia_routing_table::to_s()
+{
+    std::string result;
+    result += "Routing table for node ";
+    result += std::to_string(this->my_id);
+    result += "\n";
+
+    for (const auto& pair : this->buckets)
+    {
+        result += " bucket ";
+        result += std::to_string(pair.first);
+        result += "\n";
+
+        for (const auto& ref : pair.second)
+        {
+            result += "  peer ";
+            result += std::to_string(ref.second.first);
+            result += " at distance ";
+            result += std::to_string(ref.first);
+            result += "\n";
+        }
+    }
+
+    return result;
 }

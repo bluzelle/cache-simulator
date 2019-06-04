@@ -4,6 +4,7 @@
 #include <shared_mutex>
 #include <map>
 #include <list>
+#include <models/location_model.hpp>
 
 
 namespace ksim
@@ -20,6 +21,8 @@ namespace ksim
 
         virtual void start();
 
+        virtual void finalize();
+
         void process_messages_at(long time);
         void recieve_message_at(long time, const message_t& msg);
 
@@ -27,8 +30,11 @@ namespace ksim
 
         const actor_id_t id;
 
+        location_model::location location;
+
     protected:
         void send(actor_id_t target, const message_t& msg);
+        void send_delayed(actor_id_t target, const message_t& msg, unsigned long delay);
         long current_time();
 
     private:
@@ -40,5 +46,6 @@ namespace ksim
 
         std::map<long, std::pair<std::list<message_t>, std::mutex>> pending_messages;
         std::shared_mutex pending_messages_lock;
+        
     };
 }

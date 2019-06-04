@@ -13,12 +13,12 @@ random::random()
     this->inner.seed(seed);
 }
 
-unsigned long long random::next_ull()
+unsigned long long random::next_ull() const
 {
     return this->next_int_inclusive(0ull, ULLONG_MAX);
 }
 
-unsigned int random::next_uint()
+unsigned int random::next_uint() const
 {
     return this->next_int_inclusive(0u, UINT_MAX);
 }

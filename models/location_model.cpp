@@ -4,12 +4,8 @@
 
 using namespace ksim;
 
-location_model::location_model()
-{
-}
-
 location_model::location
-location_model::pick_location()
+location_model::pick_location() const
 {
     return std::make_tuple(
             this->rand.next_int_inclusive(-200, 200),
