@@ -6,7 +6,7 @@ namespace ksim::kcache
     {
     public:
         const unsigned int replication_factor = 3;
-        const unsigned int gossip_time_min = 3000;
-        const unsigned int gossip_time_max = 7000;
+        const unsigned int gossip_time_min = 4500;
+        const unsigned int gossip_time_max = 5500;
     };
 }
