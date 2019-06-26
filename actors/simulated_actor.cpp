@@ -1,6 +1,7 @@
 #include <actors/simulated_actor.hpp>
 #include <actors/actor_system.hpp>
 #include <assert.h>
+#include <proto/actors.pb.h>
 
 using namespace ksim;
 
@@ -9,6 +10,12 @@ simulated_actor::simulated_actor(actor_system& system)
         , location(system.location.pick_location())
         , system(system)
 {
+}
+
+void
+simulated_actor::handle_message(const ksim::message_t& /*msg*/)
+{
+    throw std::runtime_error("message not handled by any activity and default handler not defined");
 }
 
 void
@@ -67,6 +74,30 @@ simulated_actor::process_messages_at(long time)
     }
 
     for (const auto& msg : msgs)
+    {
+        this->deliver_message(msg);
+    }
+}
+
+void simulated_actor::deliver_message(const ksim::message_t &msg)
+{
+    unsigned int handled = 0;
+
+    for (const auto& pair: this->running_activities)
+    {
+        if(pair.second->handles_message(msg))
+        {
+            pair.second->handle_message(msg);
+            handled++;
+        }
+    }
+
+    if (handled > 1)
+    {
+        throw std::runtime_error("duplicate handlers");
+    }
+
+    if (handled == 0)
     {
         this->handle_message(msg);
     }

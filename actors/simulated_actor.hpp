@@ -13,15 +13,14 @@ namespace ksim
 {
     class actor_system;
 
-    using message_filter = std::function<bool(const message_t&)>;
-
     class simulated_actor
     {
-        // does messaging, time steps, etc
+        friend class activity;
+
     public:
         simulated_actor(actor_system& system);
 
-        virtual void handle_message(const ksim::message_t& msg) = 0;
+        virtual void handle_message(const ksim::message_t& msg);
 
         virtual void start();
 
@@ -42,6 +41,9 @@ namespace ksim
         {
             auto id = this->next_activity_id++;
             auto ptr = std::make_unique<T>(args...);
+            ptr->owner = this;
+            ptr->id = id;
+
             this->running_activities.insert(std::make_pair(id, ptr));
             this->running_activities[id]->start();
         }
@@ -52,6 +54,7 @@ namespace ksim
 
     private:
         void ensure_message_set_exists(long time);
+        void deliver_message(const message_t& msg);
 
         actor_system& system;
 

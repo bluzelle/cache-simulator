@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+message envelope
+{
+    oneof payload
+    {
+        string raw = 1;
+        activity_message activity_message = 2;
+        timer timer = 3;
+    }
+}
+
+message activity_message
+{
+    string payload = 1;
+    uint64 owner = 2;
+    uint64 activity = 3;
+}
+
+message timer
+{
+    uint64 id = 1;
+}
