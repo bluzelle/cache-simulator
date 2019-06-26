@@ -1,10 +1,11 @@
 syntax = "proto3";
+import "kcache.proto";
 
 message envelope
 {
     oneof payload
     {
-        string raw = 1;
+        user_envelope raw = 1;
         activity_message activity_message = 2;
         timer timer = 3;
     }
@@ -12,7 +13,7 @@ message envelope
 
 message activity_message
 {
-    string payload = 1;
+    user_envelope payload = 1;
     uint64 owner = 2;
     uint64 activity = 3;
 }
@@ -20,4 +21,12 @@ message activity_message
 message timer
 {
     uint64 id = 1;
+}
+
+message user_envelope
+{
+    oneof payload
+    {
+        kcache_message = 1;
+    }
 }

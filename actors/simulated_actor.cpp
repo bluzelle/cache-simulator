@@ -81,6 +81,45 @@ simulated_actor::process_messages_at(long time)
 
 void simulated_actor::deliver_message(const ksim::message_t &msg)
 {
+    envelope env;
+    if(!env.ParseFromString(msg))
+    {
+        throw std::runtime_error("failed to parse message");
+    }
+
+
+    switch (env.payload_case())
+    {
+        case envelope::kTimer:
+            //todo;
+            break;
+        case envelope::kActivityMessage:
+            auto owner = env.activity_message().owner();
+            auto id = env.activity_message().activity();
+            auto raw = env.activity_message().payload();
+
+            if (owner == this->id)
+            {
+                if (this->running_activities.count(id) > 0)
+                {
+                    this->running_activities.at(id)->handle_message(raw);
+                }
+                // else drop the message: it goes to an activity that has already been wrapped up
+            }
+            else
+            {
+                this->deliver_raw(raw);
+            }
+            break;
+        case envelope::kRaw:
+            this->deliver_raw(env.raw());
+            break;
+    }
+}
+
+void
+simulated_actor::deliver_raw(const std::string& msg)
+{
     unsigned int handled = 0;
 
     for (const auto& pair: this->running_activities)

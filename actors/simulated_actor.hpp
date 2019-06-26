@@ -27,7 +27,7 @@ namespace ksim
         virtual void finalize();
 
         void process_messages_at(long time);
-        void recieve_message_at(long time, const message_t& msg);
+        void recieve_message_at(long time, const env_t& msg);
 
         virtual ~simulated_actor() = default;
 
@@ -48,19 +48,21 @@ namespace ksim
             this->running_activities[id]->start();
         }
 
-        void send(actor_id_t target, const message_t& msg);
-        void send_delayed(actor_id_t target, const message_t& msg, unsigned long delay);
-        long current_time();
+        void send(actor_id_t target, const message_t& msg, unsigned long delay = 0);
+        void send(actor_id_t target, const env_t& msg, unsigned long delay = 0);
+
+        unsigned long current_time();
 
     private:
         void ensure_message_set_exists(long time);
-        void deliver_message(const message_t& msg);
+        void deliver_message(const env_t& msg);
+        void deliver_raw(const message_t& inner);
 
         actor_system& system;
 
-        long last_processed_time = 0;
+        unsigned long last_processed_time = 0;
 
-        std::map<long, std::pair<std::list<message_t>, std::mutex>> pending_messages;
+        std::map<long, std::pair<std::list<env_t>, std::mutex>> pending_messages;
         std::shared_mutex pending_messages_lock;
 
         unsigned int next_activity_id;
