@@ -1,5 +1,6 @@
 #include <actors/activity.hpp>
 #include <actors/simulated_actor.hpp>
+#include <proto/actors.pb.h>
 
 using namespace ksim;
 
@@ -12,6 +13,12 @@ activity::handles_message(const ksim::message_t& /*msg*/)
 void
 activity::send_message(ksim::actor_id_t target, const ksim::message_t &msg, unsigned long delay)
 {
+    envelope env;
+    env.mutable_activity_message()->set_activity(this->id);
+    env.mutable_activity_message()->set_owner(this->owner->id);
+    env.mutable_activity_message()->set_payload(msg);
+    
+    owner->send(target, env, )
 }
 
 void
