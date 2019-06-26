@@ -5,11 +5,15 @@
 #include <map>
 #include <list>
 #include <models/location_model.hpp>
+#include <functional>
+#include <actors/activity.hpp>
 
 
 namespace ksim
 {
     class actor_system;
+
+    using message_filter = std::function<bool(const message_t&)>;
 
     class simulated_actor
     {
@@ -33,6 +37,15 @@ namespace ksim
         location_model::location location;
 
     protected:
+        template <class T, typename... Args>
+        void start_activity(Args... args)
+        {
+            auto id = this->next_activity_id++;
+            auto ptr = std::make_unique<T>(args...);
+            this->running_activities.insert(std::make_pair(id, ptr));
+            this->running_activities[id]->start();
+        }
+
         void send(actor_id_t target, const message_t& msg);
         void send_delayed(actor_id_t target, const message_t& msg, unsigned long delay);
         long current_time();
@@ -46,6 +59,10 @@ namespace ksim
 
         std::map<long, std::pair<std::list<message_t>, std::mutex>> pending_messages;
         std::shared_mutex pending_messages_lock;
-        
+
+        unsigned int next_activity_id;
+
+        std::map<unsigned int, std::unique_ptr<activity>> running_activities;
+
     };
 }
