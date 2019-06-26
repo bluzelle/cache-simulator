@@ -13,13 +13,13 @@ simulated_actor::simulated_actor(actor_system& system)
 }
 
 void
-simulated_actor::handle_message(const ksim::message_t& /*msg*/)
+simulated_actor::handle_message(const ksim::userspace_message_t& /*msg*/)
 {
     throw std::runtime_error("message not handled by any activity and default handler not defined");
 }
 
 void
-simulated_actor::recieve_message_at(long time, const message_t& msg)
+simulated_actor::recieve_message_at(long time, const simulator_message_t& msg)
 {
     assert(time > this->last_processed_time);
 
@@ -48,15 +48,17 @@ simulated_actor::ensure_message_set_exists(long time)
 }
 
 void
-simulated_actor::send(actor_id_t target, const message_t& msg)
+simulated_actor::send(actor_id_t target, const simulator_message_t& msg, unsigned long delay)
 {
-    this->system.send(this->last_processed_time, this->id, target, msg);
+    this->system.send(this->last_processed_time + delay, this->id, target, msg);
 }
 
 void
-simulated_actor::send_delayed(actor_id_t target, const message_t& msg, unsigned long delay)
+simulated_actor::send(actor_id_t target, const userspace_message_t& msg, unsigned long delay)
 {
-    this->system.send(this->last_processed_time + delay, this->id, target, msg);
+    simulator_message_t env;
+    env.set_raw(msg);
+    this->send(target, env, delay);
 }
 
 void
@@ -65,7 +67,7 @@ simulated_actor::process_messages_at(long time)
     assert(time > this->last_processed_time);
     this->last_processed_time = time;
 
-    std::list<message_t> msgs;
+    std::list<simulator_message_t> msgs;
 
     {
         std::shared_lock lock(this->pending_messages_lock);
@@ -79,24 +81,17 @@ simulated_actor::process_messages_at(long time)
     }
 }
 
-void simulated_actor::deliver_message(const ksim::message_t &msg)
+void simulated_actor::deliver_message(const ksim::simulator_message_t& msg)
 {
-    envelope env;
-    if(!env.ParseFromString(msg))
-    {
-        throw std::runtime_error("failed to parse message");
-    }
-
-
-    switch (env.payload_case())
+    switch (msg.payload_case())
     {
         case envelope::kTimer:
             //todo;
             break;
         case envelope::kActivityMessage:
-            auto owner = env.activity_message().owner();
-            auto id = env.activity_message().activity();
-            auto raw = env.activity_message().payload();
+            auto owner = msg.activity_message().owner();
+            auto id = msg.activity_message().activity();
+            auto raw = msg.activity_message().payload();
 
             if (owner == this->id)
             {
@@ -112,13 +107,13 @@ void simulated_actor::deliver_message(const ksim::message_t &msg)
             }
             break;
         case envelope::kRaw:
-            this->deliver_raw(env.raw());
+            this->deliver_raw(msg.raw());
             break;
     }
 }
 
 void
-simulated_actor::deliver_raw(const std::string& msg)
+simulated_actor::deliver_raw(const userspace_message_t& msg)
 {
     unsigned int handled = 0;
 
