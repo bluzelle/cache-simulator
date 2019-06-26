@@ -83,6 +83,7 @@ simulated_actor::process_messages_at(long time)
 
 void simulated_actor::deliver_message(const ksim::simulator_message_t& msg)
 {
+    this->outer_current_message = msg;
     switch (msg.payload_case())
     {
         case envelope::kTimer:
@@ -110,11 +111,13 @@ void simulated_actor::deliver_message(const ksim::simulator_message_t& msg)
             this->deliver_raw(msg.raw());
             break;
     }
+    this->outer_current_message = simulator_message_t();
 }
 
 void
 simulated_actor::deliver_raw(const userspace_message_t& msg)
 {
+    this->current_message = msg;
     unsigned int handled = 0;
 
     for (const auto& pair: this->running_activities)
@@ -135,6 +138,8 @@ simulated_actor::deliver_raw(const userspace_message_t& msg)
     {
         this->handle_message(msg);
     }
+
+    this->current_message = userspace_message_t();
 }
 
 void

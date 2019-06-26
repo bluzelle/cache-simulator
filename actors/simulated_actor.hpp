@@ -53,10 +53,14 @@ namespace ksim
 
         unsigned long current_time();
 
+        userspace_message_t current_message;
+
     private:
         void ensure_message_set_exists(long time);
         void deliver_message(const simulator_message_t& msg);
         void deliver_raw(const userspace_message_t& inner);
+
+        simulator_message_t outer_current_message;
 
         actor_system& system;
 

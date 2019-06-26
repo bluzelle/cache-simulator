@@ -13,10 +13,11 @@ namespace ksim
         activity();
 
         virtual void start() = 0;
-        virtual void handle_message(const message_t& msg) = 0;
-        virtual bool handles_message(const message_t& msg);
+        virtual void handle_message(const userspace_message_t& msg) = 0;
+        virtual bool handles_message(const userspace_message_t& msg);
 
-        void send_message(actor_id_t target, const message_t& msg, unsigned long delay = 0);
+        void send_activity_message(actor_id_t target, const userspace_message_t& msg);
+        void reply_in_context(const userspace_message_t& msg);
 
         void done();
 
