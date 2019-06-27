@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <proto/actors.pb.h>
 
 namespace ksim
 {

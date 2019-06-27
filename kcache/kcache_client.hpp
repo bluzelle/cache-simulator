@@ -10,7 +10,7 @@ namespace ksim::kcache
     public:
         kcache_client(ksim::actor_system& system, const ksim::client_spec& spec);
 
-        void handle_message(const message_t& msg) override;
+        //void handle_message(const message_t& msg) override;
 
         void start() override;
 

@@ -13,7 +13,7 @@ namespace ksim::kcache
     public:
         knode(ksim::actor_system& system, kademlia_global_state& global);
 
-        void handle_message(const message_t& msg) override;
+        void handle_message(const userspace_message_t& msg) override;
 
         void start() override;
 

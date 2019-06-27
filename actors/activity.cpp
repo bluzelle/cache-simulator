@@ -5,7 +5,7 @@
 using namespace ksim;
 
 bool
-activity::handles_message(const ksim::message_t& /*msg*/)
+activity::handles_message(const ksim::userspace_message_t& /*msg*/)
 {
     return false;
 }
@@ -16,7 +16,7 @@ activity::send_activity_message(ksim::actor_id_t target, const ksim::userspace_m
     simulator_message_t env;
     env.mutable_activity_message()->set_activity(this->id);
     env.mutable_activity_message()->set_owner(this->owner->id);
-    env.mutable_activity_message()->set_payload(msg);
+    env.mutable_activity_message()->set_allocated_payload(new userspace_message_t(msg));
 
     owner->send(target, env);
 }
@@ -36,7 +36,7 @@ activity::reply_in_context(const ksim::userspace_message_t &msg)
     env.mutable_activity_message()->set_activity(query.activity());
     env.mutable_activity_message()->set_owner(query.owner());
 
-    env.mutable_activity_message()->set_payload(msg);
+    env.mutable_activity_message()->set_allocated_payload(new userspace_message_t(msg));
 
     owner->send(query.owner(), env);
 }

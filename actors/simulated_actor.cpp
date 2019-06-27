@@ -19,7 +19,7 @@ simulated_actor::handle_message(const ksim::userspace_message_t& /*msg*/)
 }
 
 void
-simulated_actor::recieve_message_at(long time, const simulator_message_t& msg)
+simulated_actor::recieve_message_at(unsigned long time, const simulator_message_t& msg)
 {
     assert(time > this->last_processed_time);
 
@@ -32,7 +32,7 @@ simulated_actor::recieve_message_at(long time, const simulator_message_t& msg)
 }
 
 void
-simulated_actor::ensure_message_set_exists(long time)
+simulated_actor::ensure_message_set_exists(unsigned long time)
 {
     bool exists;
     {
@@ -57,12 +57,12 @@ void
 simulated_actor::send(actor_id_t target, const userspace_message_t& msg, unsigned long delay)
 {
     simulator_message_t env;
-    env.set_raw(msg);
+    env.set_allocated_raw(new userspace_message_t(msg));
     this->send(target, env, delay);
 }
 
 void
-simulated_actor::process_messages_at(long time)
+simulated_actor::process_messages_at(unsigned long time)
 {
     assert(time > this->last_processed_time);
     this->last_processed_time = time;
@@ -90,25 +90,26 @@ void simulated_actor::deliver_message(const ksim::simulator_message_t& msg)
             //todo;
             break;
         case envelope::kActivityMessage:
+        {
             auto owner = msg.activity_message().owner();
             auto id = msg.activity_message().activity();
             auto raw = msg.activity_message().payload();
 
-            if (owner == this->id)
-            {
-                if (this->running_activities.count(id) > 0)
-                {
+            if (owner == this->id) {
+                if (this->running_activities.count(id) > 0) {
                     this->running_activities.at(id)->handle_message(raw);
                 }
                 // else drop the message: it goes to an activity that has already been wrapped up
-            }
-            else
-            {
+            } else {
                 this->deliver_raw(raw);
             }
             break;
+        }
         case envelope::kRaw:
             this->deliver_raw(msg.raw());
+            break;
+        case envelope::PAYLOAD_NOT_SET:
+            throw std::runtime_error("trying to deliver empty message");
             break;
     }
     this->outer_current_message = simulator_message_t();
@@ -154,7 +155,7 @@ simulated_actor::finalize()
 
 }
 
-long
+unsigned long
 simulated_actor::current_time()
 {
     return this->last_processed_time;

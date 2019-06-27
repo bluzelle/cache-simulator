@@ -15,7 +15,7 @@ namespace ksim
 
         actor_id_t register_actor(simulated_actor* registrant);
 
-        void send(long send_time, actor_id_t sender, actor_id_t target, const message_t& message);
+        void send(long send_time, actor_id_t sender, actor_id_t target, const simulator_message_t& message);
 
         void run_until(long time);
 

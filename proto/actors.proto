@@ -27,6 +27,6 @@ message user_envelope
 {
     oneof payload
     {
-        kcache_message = 1;
+        kcache_message kcache_message = 1;
     }
 }

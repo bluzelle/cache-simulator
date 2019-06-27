@@ -14,10 +14,10 @@ knode::knode(actor_system& system, kademlia_global_state& global)
 {
 }
 
-void knode::handle_message(const ksim::message_t& msg)
+void knode::handle_message(const ksim::userspace_message_t& msg)
 {
     kcache_message parsed;
-    parsed.ParseFromString(msg);
+    parsed = msg.kcache_message();
 
     switch (parsed.payload_case())
     {
@@ -154,7 +154,7 @@ void knode::do_gossip()
 
     kcache_message timer;
     timer.mutable_timer()->set_type("gossip");
-    this->send_delayed(this->id, timer.SerializeAsString(), this->rand.next_int_inclusive(this->config.gossip_time_min, this->config.gossip_time_max));
+    this->send(this->id, timer.SerializeAsString(), this->rand.next_int_inclusive(this->config.gossip_time_min, this->config.gossip_time_max));
 }
 
 void knode::finalize_and_send_message(actor_id_t target, kcache_message& msg)

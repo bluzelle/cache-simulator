@@ -10,7 +10,7 @@ actor_system::actor_system(const latency_model& latency, const location_model& l
 {}
 
 void
-actor_system::send(long send_time, actor_id_t sender, actor_id_t target, const ksim::message_t& message)
+actor_system::send(long send_time, actor_id_t sender, actor_id_t target, const ksim::simulator_message_t& message)
 {
     long dest_time = send_time + this->latency.latency(*(this->id_map.at(sender)), *(this->id_map.at(target)));
     this->id_map.at(target)->recieve_message_at(dest_time, message);
