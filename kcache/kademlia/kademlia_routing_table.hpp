@@ -23,6 +23,8 @@ namespace ksim::kcache
 
         std::string to_s();
 
+        unsigned int size();
+
     private:
 
         std::set<peer_record_t> peers;

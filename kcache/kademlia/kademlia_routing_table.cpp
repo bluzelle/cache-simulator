@@ -108,3 +108,15 @@ std::string kademlia_routing_table::to_s()
 
     return result;
 }
+
+unsigned int
+kademlia_routing_table::size()
+{
+    unsigned int total = 0;
+    for (const auto& pair : this->buckets)
+    {
+        total += pair.second.size();
+    }
+
+    return total;
+}

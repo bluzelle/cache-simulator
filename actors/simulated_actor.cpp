@@ -111,6 +111,9 @@ void simulated_actor::deliver_message(const ksim::simulator_message_t& msg)
             if (owner == this->id) {
                 if (this->running_activities.count(id) > 0) {
                     this->running_activities.at(id)->handle_message(raw);
+                } else
+                {
+                    throw std::runtime_error("");
                 }
                 // else drop the message: it goes to an activity that has already been wrapped up
             } else {

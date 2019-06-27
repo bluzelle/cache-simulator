@@ -39,10 +39,11 @@ namespace ksim
         template <class T, typename... Args>
         void start_activity(Args... args)
         {
-            auto ptr = std::make_unique<T>(this, this->next_activity_id++, args...);
+            auto next_id = this->next_activity_id++;
+            auto ptr = std::make_unique<T>(this, next_id, args...);
 
-            this->running_activities[id] = std::move(ptr);
-            this->running_activities[id]->start();
+            this->running_activities[next_id] = std::move(ptr);
+            this->running_activities[next_id]->start();
         }
 
         void send(actor_id_t target, const simulator_message_t & msg, unsigned long delay = 0);
@@ -68,11 +69,11 @@ namespace ksim
         std::map<unsigned long, std::pair<std::list<simulator_message_t>, std::mutex>> pending_messages;
         std::shared_mutex pending_messages_lock;
 
-        unsigned int next_activity_id;
+        unsigned int next_activity_id = 0;
 
         std::map<unsigned int, std::unique_ptr<activity>> running_activities;
 
-        unsigned int next_timer_id;
+        unsigned int next_timer_id = 0;
 
         std::map<unsigned int, std::function<void()>> running_timers;
 

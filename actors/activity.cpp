@@ -17,7 +17,7 @@ activity::send_activity_message(ksim::actor_id_t target, const ksim::userspace_m
     env.mutable_activity_message()->set_activity(this->id);
     env.mutable_activity_message()->set_owner(this->owner->id);
     env.mutable_activity_message()->set_allocated_payload(new userspace_message_t(msg));
-    env.mutable_activity_message()->set_sender(this->id);
+    env.mutable_activity_message()->set_sender(this->owner->id);
 
     owner->send(target, env);
 }
