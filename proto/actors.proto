@@ -16,6 +16,7 @@ message activity_message
     user_envelope payload = 1;
     uint64 owner = 2;
     uint64 activity = 3;
+    uint64 sender = 4;
 }
 
 message timer

@@ -1,7 +1,7 @@
 #pragma once
 #include <actors/actor_system.hpp>
 #include <kcache/knode.hpp>
-#include <kcache/kademlia_global_state.hpp>
+#include <kcache/kademlia/kademlia_global_state.hpp>
 #include <config/sim_config.hpp>
 
 namespace ksim

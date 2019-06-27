@@ -1,4 +1,4 @@
-#include <kcache/kademlia_global_state.hpp>
+#include <kcache/kademlia/kademlia_global_state.hpp>
 #include <ctime>
 #include <climits>
 #include <iostream>

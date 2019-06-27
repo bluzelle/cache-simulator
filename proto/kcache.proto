@@ -3,7 +3,6 @@ syntax = "proto3";
 message kcache_message
 {
     kcache_node_reference sender = 1;
-    uint64 rpc_id = 2;
 
     oneof payload
     {
@@ -12,7 +11,6 @@ message kcache_message
         kcache_ping_response_2 ping_response_2 = 8;
         kcache_find_neighborhood find_neighborhood = 5;
         kcache_find_neighborhood_response find_neighborhood_response = 6;
-        kcache_timer timer = 7;
     }
 }
 
@@ -42,11 +40,6 @@ message kcache_find_neighborhood_response
     uint64 target_kid = 1;
     repeated kcache_node_reference closest_nodes = 2;
     repeated kcache_node_reference random_nodes = 3;
-}
-
-message kcache_timer
-{
-    string type = 1;
 }
 
 message kcache_node_reference

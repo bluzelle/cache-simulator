@@ -1,6 +1,6 @@
 #pragma once
-#include <kcache/kademlia_types.hpp>
-#include <kcache/kademlia_config.hpp>
+#include <kcache/kademlia/kademlia_types.hpp>
+#include <kcache/kademlia/kademlia_config.hpp>
 #include <actors/simulated_actor.hpp>
 #include <random/random.hpp>
 #include <vector>

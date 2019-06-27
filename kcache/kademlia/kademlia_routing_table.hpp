@@ -1,5 +1,5 @@
 #pragma once
-#include <kcache/kademlia_types.hpp>
+#include <kcache/kademlia/kademlia_types.hpp>
 #include <include/types.hpp>
 #include <list>
 #include <map>

@@ -86,9 +86,17 @@ void simulated_actor::deliver_message(const ksim::simulator_message_t& msg)
     this->outer_current_message = msg;
     switch (msg.payload_case())
     {
-        case envelope::kTimer:
-            //todo;
+        case envelope::kTimer: 
+        {
+            auto timer = msg.timer();
+            if (this->running_timers.count(timer.id()) == 0) {
+                throw std::runtime_error("no such timer");
+            }
+
+            this->running_timers[timer.id()]();
+            this->running_timers.erase(timer.id());
             break;
+        }
         case envelope::kActivityMessage:
         {
             auto owner = msg.activity_message().owner();
@@ -141,6 +149,17 @@ simulated_actor::deliver_raw(const userspace_message_t& msg)
     }
 
     this->current_message = userspace_message_t();
+}
+
+void 
+simulated_actor::start_timer(unsigned long time, std::function<void()> callback)
+{
+    auto id = this->next_timer_id++;
+    simulator_message_t msg;
+    msg.mutable_timer()->set_id(id);
+    
+    this->running_timers[id] = callback;
+    this->send(this->id, msg, time);
 }
 
 void

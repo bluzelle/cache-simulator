@@ -39,17 +39,16 @@ namespace ksim
         template <class T, typename... Args>
         void start_activity(Args... args)
         {
-            auto id = this->next_activity_id++;
-            auto ptr = std::make_unique<T>(args...);
-            ptr->owner = this;
-            ptr->id = id;
+            auto ptr = std::make_unique<T>(this, this->next_activity_id++, args...);
 
-            this->running_activities.insert(std::make_pair(id, ptr));
+            this->running_activities[id] = std::move(ptr);
             this->running_activities[id]->start();
         }
 
         void send(actor_id_t target, const simulator_message_t & msg, unsigned long delay = 0);
         void send(actor_id_t target, const userspace_message_t & msg, unsigned long delay = 0);
+
+        void start_timer(unsigned long time, std::function<void()> callback);
 
         unsigned long current_time();
 
@@ -72,6 +71,10 @@ namespace ksim
         unsigned int next_activity_id;
 
         std::map<unsigned int, std::unique_ptr<activity>> running_activities;
+
+        unsigned int next_timer_id;
+
+        std::map<unsigned int, std::function<void()>> running_timers;
 
     };
 }

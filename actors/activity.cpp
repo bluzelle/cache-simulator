@@ -4,10 +4,10 @@
 
 using namespace ksim;
 
-bool
-activity::handles_message(const ksim::userspace_message_t& /*msg*/)
+activity::activity(ksim::simulated_actor *owner, unsigned int id)
+    : owner(owner)
+    , id(id)
 {
-    return false;
 }
 
 void
@@ -17,6 +17,7 @@ activity::send_activity_message(ksim::actor_id_t target, const ksim::userspace_m
     env.mutable_activity_message()->set_activity(this->id);
     env.mutable_activity_message()->set_owner(this->owner->id);
     env.mutable_activity_message()->set_allocated_payload(new userspace_message_t(msg));
+    env.mutable_activity_message()->set_sender(this->id);
 
     owner->send(target, env);
 }
@@ -35,14 +36,39 @@ activity::reply_in_context(const ksim::userspace_message_t &msg)
 
     env.mutable_activity_message()->set_activity(query.activity());
     env.mutable_activity_message()->set_owner(query.owner());
+    env.mutable_activity_message()->set_sender(this->id);
 
     env.mutable_activity_message()->set_allocated_payload(new userspace_message_t(msg));
 
-    owner->send(query.owner(), env);
+    owner->send(query.sender(), env);
 }
 
 void
 activity::done()
 {
     this->owner->running_activities.erase(this->id);
+}
+
+unsigned long
+activity::current_time()
+{
+    return this->owner->current_time();
+}
+
+actor_id_t
+activity::address()
+{
+    return this->owner->id;
+}
+
+void
+activity::start_timer(unsigned long delay, std::function<void()> callback)
+{
+    owner->start_timer(delay, callback);
+}
+
+bool
+activity::handles_message(const ksim::userspace_message_t &/*msg*/)
+{
+    return false;
 }
