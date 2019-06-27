@@ -173,7 +173,7 @@ kademlia_activity::finalize_and_reply(kcache_message& msg)
 void kademlia_activity::ingest(const kcache_node_reference& peer)
 {
     //this->log("considering connection with " + std::to_string(peer.kid()));
-    if (!this->peers.contains(peer.kid(), peer.address()))
+    if (!this->peers.contains(peer.kid(), peer.address()) && peer.address() != this->address())
     {
         //this->log("sending ping");
         kcache_message ping;
@@ -186,12 +186,20 @@ void kademlia_activity::start()
 {
     for (auto peer : this->introduction.second)
     {
-        kcache_message ping;
-        ping.mutable_ping()->set_start_time(this->current_time());
-        this->finalize_and_send_message(peer, ping);
+        if (peer != this->address())
+        {
+            kcache_message ping;
+            ping.mutable_ping()->set_start_time(this->current_time());
+            this->finalize_and_send_message(peer, ping);
+        }
     }
 
     this->start_timer(
             this->rand.next_int_inclusive(this->config.gossip_time_min, this->config.gossip_time_max),
             [&](){this->do_gossip();});
+}
+
+void kademlia_activity::finalize()
+{
+    std::cout << this->peers.to_s();
 }

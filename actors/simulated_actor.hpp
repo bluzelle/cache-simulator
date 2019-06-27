@@ -64,16 +64,16 @@ namespace ksim
 
         actor_system& system;
 
-        unsigned long last_processed_time = 0;
+        unsigned long last_processed_time = 1;
 
         std::map<unsigned long, std::pair<std::list<simulator_message_t>, std::mutex>> pending_messages;
         std::shared_mutex pending_messages_lock;
 
-        unsigned int next_activity_id = 0;
+        unsigned int next_activity_id = 1;
 
         std::map<unsigned int, std::unique_ptr<activity>> running_activities;
 
-        unsigned int next_timer_id = 0;
+        unsigned int next_timer_id = 1;
 
         std::map<unsigned int, std::function<void()>> running_timers;
 

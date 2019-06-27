@@ -87,7 +87,6 @@ simulated_actor::process_messages_at(unsigned long time)
 
 void simulated_actor::deliver_message(const ksim::simulator_message_t& msg)
 {
-    std::cout << msg.ShortDebugString() << "\n";
     this->outer_current_message = msg;
     switch (msg.payload_case())
     {
@@ -177,9 +176,11 @@ simulated_actor::start()
 }
 
 void
-simulated_actor::finalize()
-{
-
+simulated_actor::finalize() {
+    for (const auto& activity : this->running_activities)
+    {
+        activity.second->finalize();
+    }
 }
 
 unsigned long

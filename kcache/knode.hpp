@@ -15,8 +15,6 @@ namespace ksim::kcache
 
         void start() override;
 
-        void finalize() override;
-
     private:
         std::shared_ptr<kademlia_global_state> global;
     };

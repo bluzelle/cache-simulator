@@ -16,6 +16,7 @@ namespace ksim::kcache{
         void start() override;
         void handle_message(const userspace_message_t& msg) override;
         bool handles_message(const userspace_message_t& msg) override;
+        void finalize() override;
 
     private:
         void handle_ping(const kcache_message& header, const kcache_ping& msg);

@@ -30,7 +30,7 @@ namespace ksim
         std::shared_mutex pending_actors_lock;
         std::map<long, std::pair<std::set<actor_id_t>, std::mutex>> actors_with_pending_messages;
 
-        actor_id_t next_id = 0;
+        actor_id_t next_id = 1;
         std::map<actor_id_t, simulated_actor*> id_map;
     };
 }

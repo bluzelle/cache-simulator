@@ -17,7 +17,3 @@ void knode::start()
     this->start_activity<kademlia_activity>(this->global);
 }
 
-
-void knode::finalize()
-{
-}

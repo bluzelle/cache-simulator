@@ -27,7 +27,7 @@ activity::reply_in_context(const ksim::userspace_message_t &msg)
 {
     const auto& query = owner->outer_current_message.activity_message();
 
-    if (query.owner() == this->owner->id)
+    if (query.sender() == this->owner->id)
     {
         throw std::runtime_error("replying to self?");
     }
@@ -36,7 +36,7 @@ activity::reply_in_context(const ksim::userspace_message_t &msg)
 
     env.mutable_activity_message()->set_activity(query.activity());
     env.mutable_activity_message()->set_owner(query.owner());
-    env.mutable_activity_message()->set_sender(this->id);
+    env.mutable_activity_message()->set_sender(this->owner->id);
 
     env.mutable_activity_message()->set_allocated_payload(new userspace_message_t(msg));
 
@@ -71,4 +71,9 @@ bool
 activity::handles_message(const ksim::userspace_message_t &/*msg*/)
 {
     return false;
+}
+
+void
+activity::finalize()
+{
 }
