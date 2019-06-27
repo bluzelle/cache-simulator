@@ -13,6 +13,7 @@ kademlia_global_state::kademlia_global_state(const kademlia_config& config)
 std::pair<node_id_t, std::list<ksim::actor_id_t>>
 kademlia_global_state::introduce(ksim::actor_id_t registrant)
 {
+
     std::list<ksim::actor_id_t> points_of_contact;
     if (this->known_nodes.size() > 0)
     {

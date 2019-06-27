@@ -11,13 +11,13 @@ namespace ksim::kcache
     class knode : public simulated_actor
     {
     public:
-        knode(ksim::actor_system& system, kademlia_global_state& global);
+        knode(ksim::actor_system& system, std::shared_ptr<kademlia_global_state> global);
 
         void start() override;
 
         void finalize() override;
 
     private:
-        kademlia_global_state& global;
+        std::shared_ptr<kademlia_global_state> global;
     };
 }

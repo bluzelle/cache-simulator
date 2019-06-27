@@ -61,7 +61,7 @@ simulated_actor::send(actor_id_t target, const userspace_message_t& msg, unsigne
     this->send(target, env, delay);
 }
 
-void
+unsigned long
 simulated_actor::process_messages_at(unsigned long time)
 {
     assert(time > this->last_processed_time);
@@ -75,18 +75,23 @@ simulated_actor::process_messages_at(unsigned long time)
         this->pending_messages.erase(time);
     }
 
+    unsigned long count = msgs.size();
+
     for (const auto& msg : msgs)
     {
         this->deliver_message(msg);
     }
+
+    return count;
 }
 
 void simulated_actor::deliver_message(const ksim::simulator_message_t& msg)
 {
+    std::cout << msg.ShortDebugString() << "\n";
     this->outer_current_message = msg;
     switch (msg.payload_case())
     {
-        case envelope::kTimer: 
+        case envelope::kTimer:
         {
             auto timer = msg.timer();
             if (this->running_timers.count(timer.id()) == 0) {
@@ -151,13 +156,13 @@ simulated_actor::deliver_raw(const userspace_message_t& msg)
     this->current_message = userspace_message_t();
 }
 
-void 
+void
 simulated_actor::start_timer(unsigned long time, std::function<void()> callback)
 {
     auto id = this->next_timer_id++;
     simulator_message_t msg;
     msg.mutable_timer()->set_id(id);
-    
+
     this->running_timers[id] = callback;
     this->send(this->id, msg, time);
 }

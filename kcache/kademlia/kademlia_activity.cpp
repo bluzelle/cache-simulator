@@ -2,12 +2,12 @@
 
 using namespace ksim::kcache;
 
-kademlia_activity::kademlia_activity(simulated_actor* owner, unsigned int id, kademlia_global_state& global)
+kademlia_activity::kademlia_activity(simulated_actor* owner, unsigned int id, std::shared_ptr<kademlia_global_state> global)
         : activity(owner, id)
-        , introduction(global.introduce(this->address()))
+        , introduction(global->introduce(this->address()))
         , k_id(this->introduction.first)
-        , peers(this->k_id, global.config.replication_factor)
-        , config(global.config)
+        , peers(this->k_id, global->config.replication_factor)
+        , config(global->config)
 {
 }
 

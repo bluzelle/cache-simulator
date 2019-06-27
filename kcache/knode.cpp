@@ -6,7 +6,7 @@
 
 using namespace ksim::kcache;
 
-knode::knode(actor_system& system, kademlia_global_state& global)
+knode::knode(actor_system& system, std::shared_ptr<kademlia_global_state> global)
         : simulated_actor(system)
         , global(global)
 {

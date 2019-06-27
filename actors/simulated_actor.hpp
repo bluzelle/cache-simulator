@@ -26,7 +26,7 @@ namespace ksim
 
         virtual void finalize();
 
-        void process_messages_at(unsigned long time);
+        unsigned long process_messages_at(unsigned long time);
         void recieve_message_at(unsigned long time, const simulator_message_t& msg);
 
         virtual ~simulated_actor() = default;

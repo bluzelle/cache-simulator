@@ -18,7 +18,7 @@ namespace ksim
         actor_system system;
 
         kcache::kademlia_config algo_config;
-        kcache::kademlia_global_state global;
+        std::shared_ptr<kcache::kademlia_global_state> global;
 
         std::list<std::unique_ptr<simulated_actor>> actors;
     };

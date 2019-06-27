@@ -11,7 +11,7 @@ namespace ksim::kcache{
     class kademlia_activity : public activity {
 
     public:
-        kademlia_activity(simulated_actor* owner, unsigned int id, kademlia_global_state& global);
+        kademlia_activity(simulated_actor* owner, unsigned int id, std::shared_ptr<kademlia_global_state> global);
 
         void start() override;
         void handle_message(const userspace_message_t& msg) override;

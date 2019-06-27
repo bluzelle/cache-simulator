@@ -41,6 +41,7 @@ void
 actor_system::run_until(long time)
 {
     random rand;
+    long messages_processed = 0;
 
     while (!this->actors_with_pending_messages.empty() && this->actors_with_pending_messages.begin()->first <= time)
     {
@@ -50,12 +51,12 @@ actor_system::run_until(long time)
 
         if(rand.next_uint() % 1000 == 0)
         {
-            std::cout << "simulation at time " << next_tick << "\n";
+            std::cout << "simulation at time " << next_tick << ", " << messages_processed << " messages processed\n";
         }
 
         for (const auto& actor : to_act)
         {
-            this->id_map.at(actor)->process_messages_at(next_tick);
+            messages_processed += this->id_map.at(actor)->process_messages_at(next_tick);
         }
     }
 }
