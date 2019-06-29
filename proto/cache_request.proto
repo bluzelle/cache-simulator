@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+message cache_request
+{
+    string chunk_id;
+    double frequency;
+}
