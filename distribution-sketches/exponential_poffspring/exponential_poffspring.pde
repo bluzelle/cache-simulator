@@ -5,7 +5,7 @@ int nodes = 0;
 int maxNodes = 10000;
 
 float breakChance = 0.07;
-float lambda = 0.13;
+float cityRadius= 7;
 int min_sites = 20;
 
 ArrayList<float[]> known = new ArrayList<float[]>();
@@ -22,7 +22,7 @@ void draw(){
     y = random(0, ys);
   }else{
     float angle = random(0, 2*PI);
-    float distance = -log(random(0, 1))/lambda;
+    float distance = -log(random(0, 1))*cityRadius;
     float[] base = known.get(floor(random(0, known.size())));
     
     x = base[0] + sin(angle)*distance;

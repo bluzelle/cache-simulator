@@ -14,6 +14,6 @@ namespace ksim
 
         const long duration = 10000000;
         const latency_model latency;
-        const location_model location;
+        location_model location;
     };
 }

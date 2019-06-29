@@ -4,7 +4,7 @@
 
 using namespace ksim;
 
-actor_system::actor_system(const latency_model& latency, const location_model& location)
+actor_system::actor_system(const latency_model& latency, location_model& location)
         : latency(latency)
         , location(location)
 {}

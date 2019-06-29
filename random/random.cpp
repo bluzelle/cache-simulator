@@ -23,3 +23,7 @@ unsigned int random::next_uint() const
     return this->next_int_inclusive(0u, UINT_MAX);
 }
 
+double random::next_unit_random() const
+{
+    return this->next_float_inclusive_exclusive(0.0, 1.0);
+}

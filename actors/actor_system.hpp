@@ -11,7 +11,7 @@ namespace ksim
     class actor_system
     {
     public:
-        actor_system(const latency_model& latency, const location_model& location);
+        actor_system(const latency_model& latency, location_model& location);
 
         actor_id_t register_actor(simulated_actor* registrant);
 
@@ -22,7 +22,7 @@ namespace ksim
         void finalize();
 
         const latency_model& latency;
-        const location_model& location;
+        location_model& location;
 
     private:
         void ensure_actors_set_exists(long time);
