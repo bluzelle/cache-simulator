@@ -27,3 +27,13 @@ double random::next_unit_random() const
 {
     return this->next_float_inclusive_exclusive(0.0, 1.0);
 }
+
+std::string random::next_string(unsigned int length) const
+{
+    std::string result = "";
+    for(; length > 0; length--)
+    {
+        result += ('a' + this->next_int_inclusive(0, 25));
+    }
+    return result;
+}

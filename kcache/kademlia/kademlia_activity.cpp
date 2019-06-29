@@ -2,13 +2,19 @@
 
 using namespace ksim::kcache;
 
-kademlia_activity::kademlia_activity(simulated_actor* owner, unsigned int id, std::shared_ptr<kademlia_global_state> global)
+kademlia_activity::kademlia_activity(simulated_actor* owner, unsigned int id,
+                                     std::shared_ptr<kademlia_global_state> global, bool advertise, std::optional<node_id_t> known_kid)
         : activity(owner, id)
-        , introduction(global->introduce(this->address()))
-        , k_id(this->introduction.first)
+        , advertise(advertise)
+        , k_id(known_kid.value_or(global->get_new_kid()))
+        , seed_peers(global->get_contacts())
         , peers(this->k_id, global->config.replication_factor)
         , config(global->config)
 {
+    if(advertise)
+    {
+        global->register_address(this->address());
+    }
 }
 
 bool
@@ -74,8 +80,11 @@ void kademlia_activity::handle_ping_response(const kcache_message& header, const
     this->peers.insert(header.sender().kid(), header.sender().address(), this->current_time() - msg.start_time());
 
     kcache_message resp;
-    resp.mutable_ping_response_2()->set_start_time_2(msg.start_time_2());
-    this->finalize_and_reply(resp);
+    if(this->advertise)
+    {
+        resp.mutable_ping_response_2()->set_start_time_2(msg.start_time_2());
+        this->finalize_and_reply(resp);
+    }
 }
 
 void kademlia_activity::handle_ping_response_2(const kcache_message& header, const kcache_ping_response_2& msg)
@@ -184,7 +193,7 @@ void kademlia_activity::ingest(const kcache_node_reference& peer)
 
 void kademlia_activity::start()
 {
-    for (auto peer : this->introduction.second)
+    for (auto peer : this->seed_peers)
     {
         if (peer != this->address())
         {
@@ -201,5 +210,6 @@ void kademlia_activity::start()
 
 void kademlia_activity::finalize()
 {
+    std::cout << "kademlia activity with id " << this->k_id << " advertisement " << this->advertise << "\n";
     std::cout << this->peers.to_s();
 }

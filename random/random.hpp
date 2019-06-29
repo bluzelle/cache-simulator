@@ -29,6 +29,8 @@ namespace ksim
 
         double next_unit_random() const;
 
+        std::string next_string(unsigned int length) const;
+
     private:
         static std::atomic<unsigned int> init_count;
 

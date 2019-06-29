@@ -33,7 +33,7 @@ namespace ksim
 
         const actor_id_t id;
 
-        location_model::location location;
+        location_model::location_t location;
 
     protected:
         template <class T, typename... Args>

@@ -14,6 +14,6 @@ knode::knode(actor_system& system, std::shared_ptr<kademlia_global_state> global
 
 void knode::start()
 {
-    this->start_activity<kademlia_activity>(this->global);
+    this->start_activity<kademlia_activity>(this->global, true);
 }
 

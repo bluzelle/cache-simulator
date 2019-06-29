@@ -10,10 +10,9 @@ kademlia_global_state::kademlia_global_state(const kademlia_config& config)
 {
 }
 
-std::pair<node_id_t, std::list<ksim::actor_id_t>>
-kademlia_global_state::introduce(ksim::actor_id_t registrant)
+std::list<ksim::actor_id_t>
+kademlia_global_state::get_contacts()
 {
-
     std::list<ksim::actor_id_t> points_of_contact;
     if (this->known_nodes.size() > 0)
     {
@@ -24,7 +23,28 @@ kademlia_global_state::introduce(ksim::actor_id_t registrant)
         }
     }
 
-    this->known_nodes.push_back(registrant);
+    return points_of_contact;
+}
 
-    return std::make_pair(this->rand.next_ull(), points_of_contact);
+void
+kademlia_global_state::register_address(ksim::actor_id_t registrant)
+{
+    this->known_nodes.push_back(registrant);
+}
+
+node_id_t
+kademlia_global_state::get_new_kid()
+{
+    return this->rand.next_ull();
+}
+
+node_id_t
+kademlia_global_state::chunk_address(ksim::chunk_id_t chunk)
+{
+    if (this->chunk_mappings.count(chunk) == 0)
+    {
+        this->chunk_mappings[chunk] = this->get_new_kid();
+    }
+
+    return this->chunk_mappings[chunk];
 }

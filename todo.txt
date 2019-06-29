@@ -1,7 +1,6 @@
-Node distribution model(s)
-Client access models
 cache selection
 measure results
+Client access models
 quantify what is not accurately simulated
 
 We can cheat for how caches are discovered, and take an average to determine what the closest non cache source woul dbe

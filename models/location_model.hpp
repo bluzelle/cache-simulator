@@ -8,17 +8,17 @@ namespace ksim
     {
     public:
         // x, y, z, compute distance in the x-y plane and add z as a constant extra latency
-        using location = std::tuple<float, float, float>;
+        using location_t = std::tuple<float, float, float>;
 
-        location pick_location();
+        location_t pick_location();
 
     private:
 
-        location select_location();
+        location_t select_location();
 
         random rand;
 
-        std::vector<location> placed_locations;
+        std::vector<location_t> placed_locations;
 
         const double xmin = -200;
         const double xmax = 200;

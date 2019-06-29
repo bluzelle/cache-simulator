@@ -12,18 +12,18 @@ namespace
     const double pi = std::acos(-1);
 }
 
-location_model::location
+location_model::location_t
 location_model::pick_location()
 {
     auto loc = this->select_location();
     this->placed_locations.push_back(loc);
 
-    std::cout << "(" << std::get<0>(loc) << "," << std::get<1>(loc) << ")\n";
+    //std::cout << "(" << std::get<0>(loc) << "," << std::get<1>(loc) << ")\n";
 
     return loc;
 }
 
-location_model::location
+location_model::location_t
 location_model::select_location()
 {
     if(placed_locations.size() < this->min_sites

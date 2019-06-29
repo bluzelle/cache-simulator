@@ -11,7 +11,8 @@ namespace ksim::kcache{
     class kademlia_activity : public activity {
 
     public:
-        kademlia_activity(simulated_actor* owner, unsigned int id, std::shared_ptr<kademlia_global_state> global);
+        kademlia_activity(simulated_actor* owner, unsigned int id,
+                          std::shared_ptr<kademlia_global_state> global, bool advertise, std::optional<node_id_t> known_kid = std::nullopt);
 
         void start() override;
         void handle_message(const userspace_message_t& msg) override;
@@ -31,8 +32,9 @@ namespace ksim::kcache{
         void finalize_and_send_message(actor_id_t target, kcache_message& msg);
         void finalize_and_reply(kcache_message& msg);
 
-        const std::pair<node_id_t, std::list<ksim::actor_id_t>> introduction;
+        const bool advertise;
         const node_id_t k_id;
+        std::list<ksim::actor_id_t> seed_peers;
         kademlia_routing_table peers;
         ksim::random rand;
         const kademlia_config& config;
