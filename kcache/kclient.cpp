@@ -16,5 +16,5 @@ void
 kclient::start()
 {
     auto kademlia = this->start_activity<kademlia_activity>(this->global, false, this->k_id);
-    this->start_activity<cache_client_activity>(this->global, kademlia);
+    this->start_activity<cache_client_activity>(this->global, kademlia, this->work);
 }

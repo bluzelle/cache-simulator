@@ -1,9 +1,11 @@
-cache selection
-measure results
-Client access models
-quantify what is not accurately simulated
+Implement statistics for results
+Implement more sophisticated logging so I can follow a thread
+Implement client models
 
-We can cheat for how caches are discovered, and take an average to determine what the closest non cache source woul dbe
-We can also think about everything as only steady state, and measure how close clients are to their respective caches at the end of the simulation
+Quantify what is not accurately simulated
+  - steady state
+Prepare to talk about it
 
+Conclusions:
+  - this is a "continually running" thing, not a spur of the moment thing
 

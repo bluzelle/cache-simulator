@@ -70,11 +70,9 @@ cache_node_activity::tick() {
     std::set<chunk_id_t> removed;
 
     std::set_difference(new_chunks.begin(), new_chunks.end(), this->current_cached_chunks.begin(),
-                        this->current_cached_chunks.end(), std::inserter(removed, removed.begin()));
+                        this->current_cached_chunks.end(), std::inserter(added, added.begin()));
     std::set_difference(this->current_cached_chunks.begin(), this->current_cached_chunks.end(), new_chunks.begin(),
-                        new_chunks.end(), std::inserter(added, added.begin()));
-
-    this->current_cached_chunks = new_chunks;
+                        new_chunks.end(), std::inserter(removed, removed.begin()));
 
     for (const auto &chunk : added)
     {
@@ -85,6 +83,8 @@ cache_node_activity::tick() {
     {
         this->global->stop_caching(this->address(), chunk);
     }
+
+    this->current_cached_chunks = new_chunks;
 
     this->start_timer(this->global->config.cache_choice_update_interval, [&](){this->tick();});
 }

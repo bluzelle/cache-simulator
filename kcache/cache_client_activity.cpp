@@ -4,9 +4,11 @@ using namespace ksim::kcache;
 
 cache_client_activity::cache_client_activity(ksim::simulated_actor *owner, unsigned int id,
                                              std::shared_ptr<ksim::kcache::kcache_global_state> global,
-                                             std::shared_ptr<ksim::kcache::kademlia_activity> kademlia)
+                                             std::shared_ptr<ksim::kcache::kademlia_activity> kademlia,
+                                             const client_model::client_work_model& work)
 
     : activity(owner, id)
+    , work(work)
     , global(global)
     , kademlia(kademlia)
 {

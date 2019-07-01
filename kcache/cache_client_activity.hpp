@@ -11,7 +11,7 @@ namespace ksim::kcache
     class cache_client_activity : public activity {
     public:
         cache_client_activity(simulated_actor* owner, unsigned int id,
-                              std::shared_ptr<kcache_global_state> global, std::shared_ptr<kademlia_activity> kademlia);
+                              std::shared_ptr<kcache_global_state> global, std::shared_ptr<kademlia_activity> kademlia, const client_model::client_work_model& work);
 
         void start() override;
 
