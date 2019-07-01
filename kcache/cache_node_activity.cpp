@@ -26,9 +26,7 @@ cache_node_activity::handle_message(const ksim::userspace_message_t &msg)
         case cache_finding_message::kCacheRequest:
             this->chunk_desires[inner.cache_request().chunk_id()] += inner.cache_request().frequency();
             break;
-        case cache_finding_message::kCachePing:
-            //fallthrough
-        case cache_finding_message::kAuthoratitivePing:
+        case cache_finding_message::kPing:
             this->reply_in_context(msg);
             break;
         default:

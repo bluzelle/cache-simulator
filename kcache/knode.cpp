@@ -11,6 +11,7 @@ knode::knode(actor_system& system, std::shared_ptr<kcache_global_state> global)
         : simulated_actor(system)
         , global(global)
 {
+    throw std::runtime_error("todo: register for storage");
 }
 
 void knode::start()

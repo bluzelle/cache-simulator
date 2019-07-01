@@ -6,11 +6,9 @@ message cache_finding_message
     oneof payload
     {
         cache_request cache_request = 1;
-        authoratitive_ping authoratitive_ping = 2;
-        cache_ping cache_ping = 3;
+        ping ping = 2;
     }
 }
-
 
 message cache_request
 {
@@ -18,14 +16,16 @@ message cache_request
     double frequency = 2;
 }
 
-message authoratitive_ping
+enum ping_type
 {
-    uint64 start_time = 1;
-    uint64 target = 2;
+    unset = 0;
+    authoratitive = 1;
+    cache = 2;
 }
 
-message cache_ping
+message ping
 {
     uint64 start_time = 1;
     uint64 target = 2;
+    ping_type type = 3;
 }
