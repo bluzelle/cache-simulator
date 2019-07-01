@@ -3,7 +3,7 @@
 using namespace ksim::kcache;
 
 kademlia_activity::kademlia_activity(simulated_actor* owner, unsigned int id,
-                                     std::shared_ptr<kademlia_global_state> global, bool advertise, std::optional<node_id_t> known_kid)
+                                     std::shared_ptr<kcache_global_state> global, bool advertise, std::optional<node_id_t> known_kid)
         : activity(owner, id)
         , advertise(advertise)
         , k_id(known_kid.value_or(global->get_new_kid()))

@@ -1,5 +1,6 @@
 syntax = "proto3";
 import "kcache.proto";
+import "cache_finding.proto";
 
 message envelope
 {
@@ -29,5 +30,6 @@ message user_envelope
     oneof payload
     {
         kcache_message kcache_message = 1;
+        cache_finding_message cache_finding_message = 2;
     }
 }

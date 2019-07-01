@@ -1,17 +1,17 @@
-#include <kcache/kademlia/kademlia_global_state.hpp>
+#include <kcache/kcache_global_state.hpp>
 #include <ctime>
 #include <climits>
 #include <iostream>
 
 using namespace ksim::kcache;
 
-kademlia_global_state::kademlia_global_state(const kademlia_config& config)
+kcache_global_state::kcache_global_state(const kcache_config& config)
         : config(config)
 {
 }
 
 std::list<ksim::actor_id_t>
-kademlia_global_state::get_contacts()
+kcache_global_state::get_contacts()
 {
     std::list<ksim::actor_id_t> points_of_contact;
     if (this->known_nodes.size() > 0)
@@ -27,19 +27,19 @@ kademlia_global_state::get_contacts()
 }
 
 void
-kademlia_global_state::register_address(ksim::actor_id_t registrant)
+kcache_global_state::register_address(ksim::actor_id_t registrant)
 {
     this->known_nodes.push_back(registrant);
 }
 
 node_id_t
-kademlia_global_state::get_new_kid()
+kcache_global_state::get_new_kid()
 {
     return this->rand.next_ull();
 }
 
 node_id_t
-kademlia_global_state::chunk_address(ksim::chunk_id_t chunk)
+kcache_global_state::chunk_address(ksim::chunk_id_t chunk)
 {
     if (this->chunk_mappings.count(chunk) == 0)
     {
@@ -47,4 +47,10 @@ kademlia_global_state::chunk_address(ksim::chunk_id_t chunk)
     }
 
     return this->chunk_mappings[chunk];
+}
+
+void
+kcache_global_state::register_kid_for_storage(ksim::actor_id_t /*address*/, ksim::kcache::node_id_t /*kid*/)
+{
+
 }

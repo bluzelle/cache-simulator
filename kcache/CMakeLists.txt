@@ -1,11 +1,17 @@
 add_library(kcache STATIC
         knode.hpp
         knode.cpp
-        kademlia/kademlia_global_state.cpp
-        kademlia/kademlia_global_state.hpp
+        kcache_global_state.cpp
+        kcache_global_state.hpp
         kademlia/kademlia_routing_table.hpp
         kademlia/kademlia_routing_table.cpp
-        kademlia/kademlia_activity.cpp kademlia/kademlia_activity.hpp kclient.cpp kclient.hpp)
+        kademlia/kademlia_activity.cpp
+        kademlia/kademlia_activity.hpp
+        kclient.cpp
+        kclient.hpp
+        cache_node_activity.cpp
+        cache_node_activity.hpp
+        kcache_config.hpp)
 
 target_link_libraries(kcache actors models proto random ${Protobuf_LIBRARIES})
 target_include_directories(kcache PRIVATE ${PROTO_INCLUDE_DIR})

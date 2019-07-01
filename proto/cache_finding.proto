@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+
+message cache_finding_message
+{
+    oneof payload
+    {
+        cache_request cache_request = 1;
+        authoratitive_ping authoratitive_ping = 2;
+        cache_ping cache_ping = 3;
+    }
+}
+
+
+message cache_request
+{
+    string chunk_id = 1;
+    double frequency = 2;
+}
+
+message authoratitive_ping
+{
+    uint64 start_time = 1;
+    uint64 target = 2;
+}
+
+message cache_ping
+{
+    uint64 start_time = 1;
+    uint64 target = 2;
+}
