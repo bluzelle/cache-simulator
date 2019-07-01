@@ -99,7 +99,7 @@ kcache_global_state::find_authoratitive_stores(ksim::chunk_id_t chunk)
         auto end_range = potential_locations.end();
 
         std::nth_element(start_sorted, end_sorted, end_range,
-            [](const auto& a, const auto& b)
+            [&](const auto& a, const auto& b)
             {
                 node_id_t distance_a = target_kid ^ this->known_storage_kids[a];
                 node_id_t distance_b = target_kid ^ this->known_storage_kids[b];
@@ -107,7 +107,7 @@ kcache_global_state::find_authoratitive_stores(ksim::chunk_id_t chunk)
             });
 
         std::set<actor_id_t> results;
-        for(int i=0; i<this->config.replication_factor; i++)
+        for(unsigned int i=0; i<this->config.replication_factor; i++)
         {
             results.insert(potential_locations[i]);
         }
