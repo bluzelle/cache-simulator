@@ -1,4 +1,5 @@
 #include <kcache/kclient.hpp>
+#include <kcache/cache_client_activity.hpp>
 #include <kcache/kademlia/kademlia_activity.hpp>
 
 using namespace ksim::kcache;
@@ -14,5 +15,6 @@ kclient::kclient(ksim::actor_system &system, std::shared_ptr<ksim::kcache::kcach
 void
 kclient::start()
 {
-    this->start_activity<kademlia_activity>(this->global, false, this->k_id);
+    auto kademlia = this->start_activity<kademlia_activity>(this->global, false, this->k_id);
+    this->start_activity<cache_client_activity>(this->global, kademlia);
 }

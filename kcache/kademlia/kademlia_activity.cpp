@@ -213,3 +213,8 @@ void kademlia_activity::finalize()
     std::cout << "kademlia activity with id " << this->k_id << " advertisement " << this->advertise << "\n";
     std::cout << this->peers.to_s();
 }
+
+const kademlia_routing_table& kademlia_activity::routing_table()
+{
+    return this->peers;
+}

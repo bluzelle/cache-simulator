@@ -32,7 +32,7 @@ void kademlia_routing_table::insert(ksim::kcache::node_id_t kid, ksim::actor_id_
     }
 }
 
-std::list<kademlia_routing_table::peer_record_t> kademlia_routing_table::k_nearest(ksim::kcache::node_id_t target)
+std::list<kademlia_routing_table::peer_record_t> kademlia_routing_table::k_nearest(ksim::kcache::node_id_t target) const
 {
     if(this->peers.size() <= this->bucket_size)
     {
@@ -54,7 +54,7 @@ std::list<kademlia_routing_table::peer_record_t> kademlia_routing_table::k_neare
     return result;
 }
 
-std::list<kademlia_routing_table::peer_record_t> kademlia_routing_table::random()
+std::list<kademlia_routing_table::peer_record_t> kademlia_routing_table::random() const
 {
     if(this->peers.size() <= this->bucket_size)
     {
@@ -78,12 +78,12 @@ std::list<kademlia_routing_table::peer_record_t> kademlia_routing_table::random(
     return result;
 }
 
-bool kademlia_routing_table::contains(ksim::kcache::node_id_t kid, ksim::actor_id_t id)
+bool kademlia_routing_table::contains(ksim::kcache::node_id_t kid, ksim::actor_id_t id) const
 {
     return this->peers.count(std::make_pair(kid, id)) != 0;
 }
 
-std::string kademlia_routing_table::to_s()
+std::string kademlia_routing_table::to_s() const
 {
     std::string result;
     result += "Routing table for node ";
@@ -110,7 +110,7 @@ std::string kademlia_routing_table::to_s()
 }
 
 unsigned int
-kademlia_routing_table::size()
+kademlia_routing_table::size() const
 {
     unsigned int total = 0;
     for (const auto& pair : this->buckets)
@@ -120,3 +120,22 @@ kademlia_routing_table::size()
 
     return total;
 }
+
+std::set<kademlia_routing_table::peer_record_t> kademlia_routing_table::peers_closer_than(unsigned int latency) const
+{
+    std::set<peer_record_t> result_set;
+
+    for (const auto& bucket : this->buckets)
+    {
+        for (const auto &bucket_entry : bucket.second)
+        {
+            if (bucket_entry.first < latency)
+            {
+                result_set.insert(bucket_entry.second);
+            }
+        }
+    }
+
+    return result_set;
+}
+

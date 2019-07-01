@@ -37,13 +37,15 @@ namespace ksim
 
     protected:
         template <class T, typename... Args>
-        void start_activity(Args... args)
+        std::shared_ptr<T> start_activity(Args... args)
         {
             auto next_id = this->next_activity_id++;
-            auto ptr = std::make_unique<T>(this, next_id, args...);
+            auto ptr = std::make_shared<T>(this, next_id, args...);
 
-            this->running_activities[next_id] = std::move(ptr);
+            this->running_activities[next_id] = ptr;
             this->running_activities[next_id]->start();
+
+            return ptr;
         }
 
         void send(actor_id_t target, const simulator_message_t & msg, unsigned long delay = 0);
@@ -71,7 +73,7 @@ namespace ksim
 
         unsigned int next_activity_id = 1;
 
-        std::map<unsigned int, std::unique_ptr<activity>> running_activities;
+        std::map<unsigned int, std::shared_ptr<activity>> running_activities;
 
         unsigned int next_timer_id = 1;
 

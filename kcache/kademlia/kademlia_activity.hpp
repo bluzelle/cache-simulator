@@ -19,6 +19,8 @@ namespace ksim::kcache{
         bool handles_message(const userspace_message_t& msg) override;
         void finalize() override;
 
+        const kademlia_routing_table& routing_table();
+
     private:
         void handle_ping(const kcache_message& header, const kcache_ping& msg);
         void handle_ping_response(const kcache_message& header, const kcache_ping_response& msg);
