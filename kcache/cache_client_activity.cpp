@@ -102,8 +102,6 @@ cache_client_activity::tick()
         // exclusively a lower latency.
         this->send_speculative_request(this->closest_cache);
     }
-
-    throw std::runtime_error("send requests!");
 }
 
 void

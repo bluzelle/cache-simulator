@@ -218,3 +218,8 @@ const kademlia_routing_table& kademlia_activity::routing_table()
 {
     return this->peers;
 }
+
+node_id_t kademlia_activity::get_k_id()
+{
+    return this->k_id;
+}

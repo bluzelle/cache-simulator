@@ -20,6 +20,7 @@ namespace ksim::kcache{
         void finalize() override;
 
         const kademlia_routing_table& routing_table();
+        node_id_t get_k_id();
 
     private:
         void handle_ping(const kcache_message& header, const kcache_ping& msg);

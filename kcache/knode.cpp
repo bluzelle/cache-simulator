@@ -11,12 +11,12 @@ knode::knode(actor_system& system, std::shared_ptr<kcache_global_state> global)
         : simulated_actor(system)
         , global(global)
 {
-    throw std::runtime_error("todo: register for storage");
 }
 
 void knode::start()
 {
-    this->start_activity<kademlia_activity>(this->global, true);
+    auto kademlia = this->start_activity<kademlia_activity>(this->global, true);
+    this->global->register_kid_for_storage(this->id, kademlia->get_k_id());
     this->start_activity<cache_node_activity>(this->global);
 }
 
