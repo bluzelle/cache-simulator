@@ -46,11 +46,14 @@ cache_node_activity::start()
 void
 cache_node_activity::tick() {
     std::set<std::pair<double, chunk_id_t>> selection;
+
+    // order the requested chunks by weight
     std::transform(this->chunk_desires.begin(), this->chunk_desires.end(), std::inserter(selection, selection.begin()),
                    [](const auto &pair) {
                        return std::make_pair(pair.second, pair.first);
                    });
 
+    // remove the ones at the front (least) if we have too many
     if (selection.size() > this->global->config.cache_chunks_per_node) {
         auto to_remove = this->global->config.cache_chunks_per_node - selection.size();
 
@@ -64,6 +67,7 @@ cache_node_activity::tick() {
     std::transform(selection.begin(), selection.end(), std::inserter(new_chunks, new_chunks.begin()),
                    [](const auto &pair) {return pair.second;});
 
+    // identify the chunks that have been added and removed
     std::set<chunk_id_t> added;
     std::set<chunk_id_t> removed;
 
@@ -71,6 +75,8 @@ cache_node_activity::tick() {
                         this->current_cached_chunks.end(), std::inserter(removed, removed.begin()));
     std::set_difference(this->current_cached_chunks.begin(), this->current_cached_chunks.end(), new_chunks.begin(),
                         new_chunks.end(), std::inserter(added, added.begin()));
+
+    this->current_cached_chunks = new_chunks;
 
     for (const auto &chunk : added)
     {
@@ -81,4 +87,6 @@ cache_node_activity::tick() {
     {
         this->global->stop_caching(this->address(), chunk);
     }
+
+    this->start_timer(this->global->config.cache_choice_update_interval, [&](){this->tick();});
 }

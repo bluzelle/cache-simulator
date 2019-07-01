@@ -1,5 +1,6 @@
 #include <kcache/knode.hpp>
 #include <kcache/kademlia/kademlia_activity.hpp>
+#include <kcache/cache_node_activity.hpp>
 #include <actors/simulated_actor.hpp>
 #include <iostream>
 #include <proto/kcache.pb.h>
@@ -15,5 +16,6 @@ knode::knode(actor_system& system, std::shared_ptr<kcache_global_state> global)
 void knode::start()
 {
     this->start_activity<kademlia_activity>(this->global, true);
+    this->start_activity<cache_node_activity>(this->global);
 }
 

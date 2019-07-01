@@ -26,7 +26,8 @@ namespace ksim::kcache
         void start_caching(actor_id_t actor, chunk_id_t chunk);
         void stop_caching(actor_id_t actor, chunk_id_t chunk);
 
-        std::list<actor_id_t> get_authoratitive_stores;
+        const std::set<actor_id_t>& find_authoratitive_stores(chunk_id_t);
+        const std::set<actor_id_t>& find_caches(chunk_id_t);
 
         const kcache_config& config;
 
@@ -36,6 +37,10 @@ namespace ksim::kcache
         kcache::node_id_t chunk_address(chunk_id_t chunk);
 
     private:
+        std::map<chunk_id_t, std::set<actor_id_t>> authoratitive_store_locations;
+        std::map<chunk_id_t, std::set<actor_id_t>> cache_locations;
+        std::map<actor_id_t, node_id_t> known_storage_kids;
+
         std::map<chunk_id_t, node_id_t> chunk_mappings;
         std::vector<actor_id_t> known_nodes;
         ksim::random rand;
