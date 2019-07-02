@@ -1,4 +1,3 @@
-Implement statistics for results
 Implement more sophisticated logging so I can follow a thread
 Implement client models
 

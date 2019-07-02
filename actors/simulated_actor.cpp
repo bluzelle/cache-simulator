@@ -188,3 +188,8 @@ simulated_actor::current_time()
 {
     return this->last_processed_time;
 }
+
+stats& simulated_actor::stats()
+{
+    return this->system.stats;
+}

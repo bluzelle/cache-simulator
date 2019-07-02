@@ -7,6 +7,7 @@
 #include <models/location_model.hpp>
 #include <functional>
 #include <actors/activity.hpp>
+#include <stats/stats.hpp>
 
 
 namespace ksim
@@ -56,6 +57,8 @@ namespace ksim
         unsigned long current_time();
 
         userspace_message_t current_message;
+
+        ksim::stats& stats();
 
     private:
         void ensure_message_set_exists(unsigned long time);

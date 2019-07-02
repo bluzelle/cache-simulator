@@ -77,3 +77,10 @@ void
 activity::finalize()
 {
 }
+
+stats& activity::stats()
+{
+    return this->owner->stats();
+}
+
+

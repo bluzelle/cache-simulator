@@ -4,9 +4,10 @@
 
 using namespace ksim;
 
-actor_system::actor_system(const latency_model& latency, location_model& location)
+actor_system::actor_system(const latency_model& latency, location_model& location, ksim::stats& stats)
         : latency(latency)
         , location(location)
+        , stats(stats)
 {}
 
 void
@@ -41,7 +42,7 @@ void
 actor_system::run_until(long time)
 {
     random rand;
-    long messages_processed = 0;
+    unsigned long messages_processed = 0;
 
     while (!this->actors_with_pending_messages.empty() && this->actors_with_pending_messages.begin()->first <= time)
     {
@@ -49,14 +50,14 @@ actor_system::run_until(long time)
         auto to_act = this->actors_with_pending_messages.at(next_tick).first;
         this->actors_with_pending_messages.erase(next_tick);
 
-        if(rand.next_uint() % 1000 == 0)
-        {
-            std::cout << "simulation at time " << next_tick << ", " << messages_processed << " messages processed\n";
-        }
-
         for (const auto& actor : to_act)
         {
-            messages_processed += this->id_map.at(actor)->process_messages_at(next_tick);
+            auto delta = this->id_map.at(actor)->process_messages_at(next_tick);
+            if (messages_processed / 10000 != (messages_processed+delta) / 10000)
+            {
+                std::cout << "simulation at time " << next_tick << ", " << messages_processed+delta << " messages processed\n";
+            }
+            messages_processed += delta;
         }
     }
 }

@@ -5,13 +5,14 @@
 #include <set>
 #include <mutex>
 #include <shared_mutex>
+#include <stats/stats.hpp>
 
 namespace ksim
 {
     class actor_system
     {
     public:
-        actor_system(const latency_model& latency, location_model& location);
+        actor_system(const latency_model& latency, location_model& location, stats& stats);
 
         actor_id_t register_actor(simulated_actor* registrant);
 
@@ -23,6 +24,8 @@ namespace ksim
 
         const latency_model& latency;
         location_model& location;
+
+        ksim::stats& stats;
 
     private:
         void ensure_actors_set_exists(long time);

@@ -7,7 +7,7 @@ using namespace ksim;
 
 simulation::simulation(sim_config config)
     : config(std::move(config))
-    , system(this->config.latency, this->config.location)
+    , system(this->config.latency, this->config.location, this->stats)
     , global(std::make_shared<kcache::kcache_global_state>(this->algo_config))
 {
     std::cout << "Building simulation\n";
@@ -32,4 +32,7 @@ void simulation::run()
 
     this->system.run_until(this->config.duration);
     this->system.finalize();
+
+    std::cout << "\n\nFinal stats:\n";
+    std::cout << this->stats.to_string();
 }

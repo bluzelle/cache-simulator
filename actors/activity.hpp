@@ -1,6 +1,7 @@
 #pragma once
 #include <include/types.hpp>
 #include <functional>
+#include <stats/stats.hpp>
 
 namespace ksim
 {
@@ -27,6 +28,8 @@ namespace ksim
         unsigned long current_time();
         actor_id_t address();
         void start_timer(unsigned long delay, std::function<void()> callback);
+
+        ksim::stats& stats();
 
     private:
         simulated_actor* const owner;

@@ -4,7 +4,7 @@ add_library(actors STATIC
         actor_system.cpp
         actor_system.hpp
         activity.cpp
-        activity.hpp)
+        activity.hpp ../stats/stats.cpp ../stats/stats.hpp)
 
 target_link_libraries(actors proto ${Protobuf_LIBRARIES})
 target_include_directories(actors PRIVATE ${PROTO_INCLUDE_DIR})
