@@ -5,6 +5,8 @@ Quantify what is not accurately simulated
   - steady state
 Prepare to talk about it
 
+multithreading?
+
 Conclusions:
   - this is a "continually running" thing, not a spur of the moment thing
 

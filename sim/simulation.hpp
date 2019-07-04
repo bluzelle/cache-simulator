@@ -4,6 +4,7 @@
 #include <kcache/kcache_global_state.hpp>
 #include <config/sim_config.hpp>
 #include <stats/stats.hpp>
+#include <log/log.hpp>
 
 namespace ksim
 {
@@ -24,6 +25,8 @@ namespace ksim
         std::shared_ptr<kcache::kcache_global_state> global;
 
         std::list<std::unique_ptr<simulated_actor>> actors;
+
+        ksim::log log{"sim"};
     };
 }
 

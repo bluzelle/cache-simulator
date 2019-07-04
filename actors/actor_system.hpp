@@ -6,6 +6,7 @@
 #include <mutex>
 #include <shared_mutex>
 #include <stats/stats.hpp>
+#include <log/log.hpp>
 
 namespace ksim
 {
@@ -35,5 +36,7 @@ namespace ksim
 
         actor_id_t next_id = 1;
         std::map<actor_id_t, simulated_actor*> id_map;
+
+        ksim::log log{"actor system"};
     };
 }

@@ -10,7 +10,7 @@ simulation::simulation(sim_config config)
     , system(this->config.latency, this->config.location, this->stats)
     , global(std::make_shared<kcache::kcache_global_state>(this->algo_config))
 {
-    std::cout << "Building simulation\n";
+    this->log.say("building simulation");
     for (int i=0; i<this->config.nodes_count; i++)
     {
         this->actors.push_back(std::make_unique<kcache::knode>(this->system, this->global));
@@ -24,7 +24,7 @@ simulation::simulation(sim_config config)
 
 void simulation::run()
 {
-    std::cout << "Running simulation\n";
+    this->log.say("running simulation");
     for (auto& actor : this->actors)
     {
         actor->start();
@@ -33,6 +33,6 @@ void simulation::run()
     this->system.run_until(this->config.duration);
     this->system.finalize();
 
-    std::cout << "\n\nFinal stats:\n";
-    std::cout << this->stats.to_string();
+    this->log.say("final stats");
+    this->log.say(this->stats.to_string());
 }
