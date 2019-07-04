@@ -1,0 +1,24 @@
+Weather service:
+  Divide world into regions at a pretty high resolution
+  90% of clients request chunk of their region
+  10% lookup a random region, but with locationmodel distribution
+    The result should be that in each area, the nearby stuff is cached and the popular stuff is cached everywhere
+
+video games:
+  "fortnite" model:
+    Devide world into regions at low resolution
+    50% of clients choose one of many chunks for their region at random (data for their session)
+    50% chose a single region wide chunk (store data, leaderboards and such)
+
+  "eve" model:
+    Give clients locations in a second location space that is unrelated to the simulation one
+    Map them to a chunk in that space
+
+  "matchmaking lobby" model:
+    (where each user is interested in data hosted by each other user in the same timezoneish)
+    devide world into medium resolution, client is interested in "nearby" region at random
+    
+
+
+    
+
