@@ -15,7 +15,7 @@ void log::say(const std::string& message)
 
 void log::say(const std::string& message, const std::string& prefix)
 {
-    std::string my_prefix = "[" + this->name + "]" + prefix;
+    std::string my_prefix = this->name + "_" + prefix;
 
     if(this->parent.has_value())
     {

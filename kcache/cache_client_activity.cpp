@@ -17,6 +17,7 @@ cache_client_activity::cache_client_activity(ksim::simulated_actor *owner, unsig
 void
 cache_client_activity::start()
 {
+    this->log << "client for chunk " << this->work.chunk << " starting\n";
     auto time = this->rand.next_int_inclusive(0ul, this->global->config.client_cache_request_interval);
     this->start_timer(time, [&](){this->tick();});
 }
@@ -38,6 +39,7 @@ cache_client_activity::handle_message(const ksim::userspace_message_t& msg)
                 case ping_type::authoratitive:
                     if(latency < this->closest_authoratative_source_latency)
                     {
+                        this->log << "new auth source at " << parsed.ping().target() << " latency " << latency << "\n";
                         this->closest_authoratative_source = parsed.ping().target();
                         this->closest_authoratative_source_latency = latency;
                     }
@@ -45,6 +47,7 @@ cache_client_activity::handle_message(const ksim::userspace_message_t& msg)
                 case ping_type::cache:
                     if(latency < this->closest_cache_latency)
                     {
+                        this->log << "new cache source at " << parsed.ping().target() << " latency " << latency << "\n";
                         this->closest_cache = parsed.ping().target();
                         this->closest_cache_latency = latency;
                     }
@@ -64,6 +67,7 @@ cache_client_activity::maybe_ping(ksim::actor_id_t target, ping_type type)
 {
     if(this->known_latencies.count(target) == 0)
     {
+        this->log << "sending ping to " << target << "\n";
         userspace_message_t msg;
         auto ptr = msg.mutable_cache_finding_message()->mutable_ping();
         ptr->set_type(type);
@@ -76,6 +80,7 @@ cache_client_activity::maybe_ping(ksim::actor_id_t target, ping_type type)
 void
 cache_client_activity::tick()
 {
+    this->log.say("tick");
     for (const auto& address: this->global->find_authoratitive_stores(this->work.chunk))
     {
         this->maybe_ping(address, ping_type::authoratitive);
@@ -91,6 +96,7 @@ cache_client_activity::tick()
     auto targets = this->kademlia->routing_table().peers_closer_than(std::min(this->closest_cache_latency, this->closest_authoratative_source_latency));
     for(const auto& peer : targets)
     {
+        this->log << "sending speculative upgrade request to " << peer.second << "\n";
         this->send_speculative_request(peer.second);
     }
 
@@ -102,6 +108,7 @@ cache_client_activity::tick()
         //
         // There is no possibility that this is a duplicate request, because the ones we already sent are to nodes with
         // exclusively a lower latency.
+        this->log << "sending speculative upkeep request to " << this->closest_cache << "\n";
         this->send_speculative_request(this->closest_cache);
     }
 }

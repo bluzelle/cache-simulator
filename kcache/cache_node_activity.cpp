@@ -37,12 +37,14 @@ cache_node_activity::handle_message(const ksim::userspace_message_t &msg)
 void
 cache_node_activity::start()
 {
+    this->log.say("cache node starting");
     unsigned long delay = this->rand.next_int_inclusive(0ul, this->global->config.cache_choice_update_interval);
     this->start_timer(delay, [&](){this->tick();});
 }
 
 void
 cache_node_activity::tick() {
+    this->log.say("tick");
     std::set<std::pair<double, chunk_id_t>> selection;
 
     // order the requested chunks by weight
@@ -50,6 +52,11 @@ cache_node_activity::tick() {
                    [](const auto &pair) {
                        return std::make_pair(pair.second, pair.first);
                    });
+
+    for (const auto& pair: selection)
+    {
+        this->log << "chunk " << pair.second << " requested with weight " << pair.first << "\n";
+    }
 
     // remove the ones at the front (least) if we have too many
     if (selection.size() > this->global->config.cache_chunks_per_node) {
@@ -76,11 +83,13 @@ cache_node_activity::tick() {
 
     for (const auto &chunk : added)
     {
+        this->log << "starting cache of " << chunk << "\n";
         this->global->start_caching(this->address(), chunk);
     }
 
     for (const auto &chunk : removed)
     {
+        this->log << "stopping cache of " << chunk << "\n";
         this->global->stop_caching(this->address(), chunk);
     }
 

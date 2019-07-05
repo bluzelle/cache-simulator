@@ -8,7 +8,7 @@ kademlia_activity::kademlia_activity(simulated_actor* owner, unsigned int id,
         , advertise(advertise)
         , k_id(known_kid.value_or(global->get_new_kid()))
         , seed_peers(global->get_contacts())
-        , peers(this->k_id, global->config.replication_factor)
+        , peers(this->k_id, global->config.replication_factor, &this->log)
         , config(global->config)
 {
     if(advertise)
@@ -67,7 +67,6 @@ kademlia_activity::handle_message(const ksim::userspace_message_t& msg)
 
 void kademlia_activity::handle_ping(const kcache_message& /*header*/, const kcache_ping& msg)
 {
-    //this->log("got ping from " + std::to_string(header.sender().kid()));
     kcache_message resp;
     resp.mutable_ping_response()->set_start_time(msg.start_time());
     resp.mutable_ping_response()->set_start_time_2(this->current_time());
@@ -76,7 +75,7 @@ void kademlia_activity::handle_ping(const kcache_message& /*header*/, const kcac
 
 void kademlia_activity::handle_ping_response(const kcache_message& header, const kcache_ping_response& msg)
 {
-    //this->log("got ping response from " + std::to_string(header.sender().kid()));
+    this->log << header.sender().kid() << " is at " << this->current_time() - msg.start_time() << "rtt\n";
     this->peers.insert(header.sender().kid(), header.sender().address(), this->current_time() - msg.start_time());
 
     kcache_message resp;
@@ -89,13 +88,14 @@ void kademlia_activity::handle_ping_response(const kcache_message& header, const
 
 void kademlia_activity::handle_ping_response_2(const kcache_message& header, const kcache_ping_response_2& msg)
 {
-    //this->log("got ping response 2 from " + std::to_string(header.sender().kid()));
+    this->log << header.sender().kid() << " is at " << this->current_time() - msg.start_time_2() << "rtt\n";
     this->peers.insert(header.sender().kid(), header.sender().address(), this->current_time() - msg.start_time_2());
 }
 
-void kademlia_activity::handle_find_neighborhood(const kcache_message& /*header*/, const kcache_find_neighborhood& msg)
+void kademlia_activity::handle_find_neighborhood(const kcache_message& header, const kcache_find_neighborhood& msg)
 {
     //this->log("got find neighborhood from " + std::to_string(header.sender().kid()));
+    this->log << "handling find neighborhood from " << header.sender().kid() << "\n";
 
     kcache_message resp;
     resp.mutable_find_neighborhood_response()->set_target_kid(msg.target_kid());
@@ -109,11 +109,13 @@ void kademlia_activity::handle_find_neighborhood(const kcache_message& /*header*
     for (const auto& peer : this->peers.k_nearest(msg.target_kid()))
     {
         reformat(peer, resp.mutable_find_neighborhood_response()->mutable_closest_nodes()->Add());
+        this->log << "nearest: " << peer.first << " at " << peer.second << "\n";
     }
 
     for (const auto& peer : this->peers.random())
     {
         reformat(peer, resp.mutable_find_neighborhood_response()->mutable_random_nodes()->Add());
+        this->log << "random: " << peer.first << " at " << peer.second << "\n";
     }
 
     this->finalize_and_reply(resp);
@@ -146,6 +148,7 @@ void kademlia_activity::handle_find_neighborhood_response(const kcache_message& 
 
 void kademlia_activity::do_gossip()
 {
+    this->log.say("tick");
     for (const auto& peer : this->peers.random())
     {
         kcache_message request;
@@ -184,6 +187,7 @@ void kademlia_activity::ingest(const kcache_node_reference& peer)
     //this->log("considering connection with " + std::to_string(peer.kid()));
     if (!this->peers.contains(peer.kid(), peer.address()) && peer.address() != this->address())
     {
+        this->log << "considering peer " << peer.kid() << " at " << peer.address() << "\n";
         //this->log("sending ping");
         kcache_message ping;
         ping.mutable_ping()->set_start_time(this->current_time());
@@ -193,7 +197,7 @@ void kademlia_activity::ingest(const kcache_node_reference& peer)
 
 void kademlia_activity::start()
 {
-    this->log << "running kademlia with id " << this->k_id << "\n";
+    this->log << "kademlia routing " << this->k_id << "starting\n";
     for (auto peer : this->seed_peers)
     {
         if (peer != this->address())

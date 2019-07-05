@@ -4,14 +4,16 @@
 
 using namespace ksim::kcache;
 
-kademlia_routing_table::kademlia_routing_table(ksim::kcache::node_id_t id, unsigned int bucket_size)
+kademlia_routing_table::kademlia_routing_table(ksim::kcache::node_id_t id, unsigned int bucket_size, ksim::log* log_parent)
     : my_id(id)
     , bucket_size(bucket_size)
+    , log("peers", log_parent)
 {
 }
 
 void kademlia_routing_table::insert(ksim::kcache::node_id_t kid, ksim::actor_id_t id, unsigned int latency)
 {
+    this->log << "inserting " << kid << " at " << latency << "rtt \n";
     peer_record_t peer = std::make_pair(kid, id);
 
     if (kid == this->my_id || this->peers.count(peer) > 0)
@@ -28,6 +30,10 @@ void kademlia_routing_table::insert(ksim::kcache::node_id_t kid, ksim::actor_id_
     if (this->buckets[bucket].size() > this->bucket_size)
     {
         this->peers.erase((*(this->buckets[bucket].rbegin())).second);
+
+        auto r = (*(this->buckets[bucket].rbegin()));
+        this->log << "removing " << r.second.first << " at " << r.first << "rtt \n";
+
         this->buckets[bucket].erase(*(this->buckets[bucket].rbegin()));
     }
 }
