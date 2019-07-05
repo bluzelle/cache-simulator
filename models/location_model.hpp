@@ -32,4 +32,3 @@ namespace ksim
         unsigned int min_sites = 20;
     };
 }
-
