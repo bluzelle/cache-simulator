@@ -8,6 +8,7 @@
 #include <functional>
 #include <actors/activity.hpp>
 #include <stats/stats.hpp>
+#include <log/log.hpp>
 
 
 namespace ksim
@@ -60,6 +61,8 @@ namespace ksim
 
         ksim::stats& stats();
 
+        ksim::log log;
+
     private:
         void ensure_message_set_exists(unsigned long time);
         void deliver_message(const simulator_message_t& msg);
@@ -81,6 +84,8 @@ namespace ksim
         unsigned int next_timer_id = 1;
 
         std::map<unsigned int, std::function<void()>> running_timers;
+
+
 
     };
 }

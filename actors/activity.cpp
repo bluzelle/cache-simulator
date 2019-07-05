@@ -5,7 +5,8 @@
 using namespace ksim;
 
 activity::activity(ksim::simulated_actor *owner, unsigned int id)
-    : owner(owner)
+    : log("activity" + std::to_string(id), &(owner->log))
+    , owner(owner)
     , id(id)
 {
 }

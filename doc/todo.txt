@@ -1,4 +1,3 @@
-Implement more sophisticated logging so I can follow a thread and make sure what I think is happening, is happening
 Implement client models
 
 Quantify what is not accurately simulated

@@ -8,6 +8,7 @@ using namespace ksim;
 simulated_actor::simulated_actor(actor_system& system)
         : id(system.register_actor(this))
         , location(system.location.pick_location())
+        , log("actor" + std::to_string(this->id))
         , system(system)
 {
 }
@@ -172,7 +173,6 @@ simulated_actor::start_timer(unsigned long time, std::function<void()> callback)
 void
 simulated_actor::start()
 {
-
 }
 
 void

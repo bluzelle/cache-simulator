@@ -2,6 +2,7 @@
 #include <include/types.hpp>
 #include <functional>
 #include <stats/stats.hpp>
+#include <log/log.hpp>
 
 namespace ksim
 {
@@ -30,6 +31,8 @@ namespace ksim
         void start_timer(unsigned long delay, std::function<void()> callback);
 
         ksim::stats& stats();
+
+        ksim::log log;
 
     private:
         simulated_actor* const owner;

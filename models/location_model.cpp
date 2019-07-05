@@ -18,8 +18,6 @@ location_model::pick_location()
     auto loc = this->select_location();
     this->placed_locations.push_back(loc);
 
-    //std::cout << "(" << std::get<0>(loc) << "," << std::get<1>(loc) << ")\n";
-
     return loc;
 }
 

@@ -193,6 +193,7 @@ void kademlia_activity::ingest(const kcache_node_reference& peer)
 
 void kademlia_activity::start()
 {
+    this->log << "running kademlia with id " << this->k_id << "\n";
     for (auto peer : this->seed_peers)
     {
         if (peer != this->address())
@@ -210,8 +211,8 @@ void kademlia_activity::start()
 
 void kademlia_activity::finalize()
 {
-    std::cout << "kademlia activity with id " << this->k_id << " advertisement " << this->advertise << "\n";
-    std::cout << this->peers.to_s();
+    this->log << "kademlia activity with id " << this->k_id << " advertisement " << this->advertise << "\n";
+    this->log << this->peers.to_s();
 }
 
 const kademlia_routing_table& kademlia_activity::routing_table()

@@ -109,7 +109,7 @@ cache_client_activity::tick()
 void
 cache_client_activity::finalize()
 {
-    std::cout << "Client of chunk " << this->work.chunk
+    this->log << "Client of chunk " << this->work.chunk
               << " using authoratitive source at " << this->closest_authoratative_source_latency
               << " rtt and cache at " << this->closest_cache_latency
               << " rtt\n";

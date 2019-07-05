@@ -33,6 +33,6 @@ void simulation::run()
     this->system.run_until(this->config.duration);
     this->system.finalize();
 
-    this->log.say("final stats");
+    this->log.say("\n\nfinal stats");
     this->log.say(this->stats.to_string());
 }

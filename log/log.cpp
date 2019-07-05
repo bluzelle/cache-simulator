@@ -44,7 +44,7 @@ void log::say(const std::string& message, const std::string& prefix)
         result += message.substr(start_index, end_index - start_index);
         result += "\n";
 
-        start_index = end_index;
+        start_index = end_index + 1;
     }
 
     std::cout << result;
