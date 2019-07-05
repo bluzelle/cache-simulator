@@ -55,13 +55,7 @@ actor_system::run_until(long time)
             auto delta = this->id_map.at(actor)->process_messages_at(next_tick);
             if (messages_processed / 10000 != (messages_processed+delta) / 10000)
             {
-                std::string msg;
-                msg += "time ";
-                msg += std::to_string(next_tick);
-                msg += ", ";
-                msg += std::to_string(messages_processed+delta);
-                msg += " messages processed";
-                this->log.say(msg);
+                this->log << "time " << next_tick << ", " << messages_processed+delta << " messages processed\n";
             }
             messages_processed += delta;
         }

@@ -48,5 +48,32 @@ void log::say(const std::string& message, const std::string& prefix)
     }
 
     std::cout << result;
+}
 
+void
+log::ingest(const std::string& message)
+{
+    this->buffer += message;
+    auto loc = this->buffer.find("\n");
+    if (loc == std::string::npos){
+        return;
+    }
+
+    this->say(this->buffer.substr(0, loc));
+    this->buffer = this->buffer.substr(loc+1, this->buffer.size());
+    this->ingest("");
+}
+
+ksim::log&
+log::operator<<(const std::string& str)
+{
+    this->ingest(str);
+    return *this;
+}
+
+ksim::log&
+log::operator<<(const char* str)
+{
+    this->ingest(std::string(str));
+    return *this;
 }
