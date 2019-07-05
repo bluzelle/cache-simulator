@@ -15,7 +15,7 @@ namespace ksim::kcache
         const unsigned int gossip_time_min = 4500;
         const unsigned int gossip_time_max = 5500;
 
-        const unsigned int cache_chunks_per_node = 10;
+        const unsigned int cache_chunks_per_node = 3;
     };
 
 }

@@ -94,6 +94,7 @@ cache_node_activity::tick() {
     }
 
     this->current_cached_chunks = new_chunks;
+    this->chunk_desires.clear();
 
     this->start_timer(this->global->config.cache_choice_update_interval, [&](){this->tick();});
 }
