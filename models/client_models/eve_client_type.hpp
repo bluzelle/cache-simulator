@@ -1,4 +1,8 @@
 #pragma once
+#include <models/location_model.hpp>
+#include <models/client_type.hpp>
+#include <include/types.hpp>
+#include <models/client_models/region_model.hpp>
 
 namespace ksim
 {
@@ -13,9 +17,18 @@ namespace ksim
      * population centres in the virtual space are cached at population centres in the real space. Sparse real
      * regions do not cache much, and sparse virtual regions are not cached anywhere.
      */
-    class eve_client_type
+    class eve_client_type : public client_type
     {
+    public:
+        eve_client_type();
 
+        virtual client_model::client_work_model generate(location_model::location_t loc) override;
+
+    private:
+        location_model virtual_location_model;
+        const region_model regions;
+
+        std::map<region_model::key_t, chunk_id_t> chunks;
     };
 }
 

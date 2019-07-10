@@ -1,4 +1,6 @@
 #pragma once
+#include <models/client_type.hpp>
+#include <models/client_models/region_model.hpp>
 
 namespace ksim
 {
@@ -12,8 +14,19 @@ namespace ksim
      * Ideal result:
      * Cities cache the chunks of all nearby regions. Sparse regions cache the nearest city's data.
      */
-    class matchmaking_lobby_client_type
+    class matchmaking_lobby_client_type: public client_type
     {
+    public:
+        matchmaking_lobby_client_type(const location_model& loc);
+        virtual client_model::client_work_model generate(location_model::location_t loc) override;
 
+    private:
+        region_model regions;
+        const unsigned int x_cells = 10;
+        const unsigned int y_cells = 10;
+        const unsigned int x_range = 3;
+        const unsigned int y_range = 3;
+
+        std::map<region_model::key_t, chunk_id_t> chunks;
     };
 }

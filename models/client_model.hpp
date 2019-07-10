@@ -2,6 +2,7 @@
 #include <include/types.hpp>
 #include <models/location_model.hpp>
 #include <random/random.hpp>
+#include <models/client_type.hpp>
 
 namespace ksim
 {
@@ -15,15 +16,15 @@ namespace ksim
         public:
             chunk_id_t chunk;
             double requests_per_unit_time = 0.01;
+            std::string name = "";
         };
+
+        client_model(const location_model& location_model);
 
         client_work_model get_workload(const location_model::location_t location);
 
     private:
-        std::vector<chunk_id_t> existing_chunks;
-        const double new_chunk_chance = 0.01;
-        const unsigned int min_chunks = 10;
-
+        std::vector<std::pair<std::unique_ptr<client_type>, unsigned int>> types;
         random rand;
     };
 }

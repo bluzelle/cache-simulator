@@ -6,7 +6,12 @@ namespace ksim
 {
     class client_type
     {
-        client_model::client_work_model generate(location_model::location_t loc);
+    public:
+        virtual client_model::client_work_model generate(location_model::location_t loc) = 0;
+        virtual ~client_type() = default;
+
+    protected:
+        ksim::random rand;
     };
 
 }
