@@ -17,7 +17,7 @@ client_work_spec matchmaking_lobby_client_type::generate(ksim::location_model::l
     if (this->chunks.count(target_key) == 0)
     {
         this->chunks[target_key] = this->rand.next_string(20);
-        this->chunks[target_key] += "[matchmaking data chunk for " + region_model::to_string(target_key) + "]";
+        this->chunks[target_key] += " [matchmaking data chunk for " + region_model::to_string(target_key) + "]";
     }
 
     client_work_spec work;

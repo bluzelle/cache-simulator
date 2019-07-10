@@ -59,14 +59,11 @@ cache_node_activity::tick() {
     }
 
     // remove the ones at the front (least) if we have too many
-    if (selection.size() > this->global->config.cache_chunks_per_node) {
-        auto to_remove = this->global->config.cache_chunks_per_node - selection.size();
-
-        auto end = selection.begin();
-        std::advance(end, to_remove);
-
-        selection.erase(selection.begin(), end);
+    while(selection.size() > this->global->config.cache_chunks_per_node) {
+        selection.erase(selection.begin());
     }
+
+    assert(selection.size() <= this->global->config.cache_chunks_per_node);
 
     std::set<chunk_id_t> new_chunks;
     std::transform(selection.begin(), selection.end(), std::inserter(new_chunks, new_chunks.begin()),
@@ -81,6 +78,7 @@ cache_node_activity::tick() {
     std::set_difference(this->current_cached_chunks.begin(), this->current_cached_chunks.end(), new_chunks.begin(),
                         new_chunks.end(), std::inserter(removed, removed.begin()));
 
+    this->log << this->current_cached_chunks.size() << " chunks were cached, adding " << added.size() << " and removing " << removed.size() << "\n";
     for (const auto &chunk : added)
     {
         this->log << "starting cache of " << chunk << "\n";
@@ -95,6 +93,8 @@ cache_node_activity::tick() {
 
     this->current_cached_chunks = new_chunks;
     this->chunk_desires.clear();
+
+    this->log << "now " << this->current_cached_chunks.size() << " chunks are cached\n";
 
     this->start_timer(this->global->config.cache_choice_update_interval, [&](){this->tick();});
 }
