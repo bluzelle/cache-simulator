@@ -14,7 +14,7 @@ namespace ksim::kcache
 
     private:
         std::shared_ptr<kcache_global_state> global;
-        const client_model::client_work_model work;
+        const client_work_spec work;
         node_id_t k_id;
     };
 }

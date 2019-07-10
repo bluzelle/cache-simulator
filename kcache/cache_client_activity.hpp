@@ -11,7 +11,7 @@ namespace ksim::kcache
     class cache_client_activity : public activity {
     public:
         cache_client_activity(simulated_actor* owner, unsigned int id,
-                              std::shared_ptr<kcache_global_state> global, std::shared_ptr<kademlia_activity> kademlia, const client_model::client_work_model& work);
+                              std::shared_ptr<kcache_global_state> global, std::shared_ptr<kademlia_activity> kademlia, const client_work_spec& work);
 
         void start() override;
 
@@ -24,7 +24,7 @@ namespace ksim::kcache
         void maybe_ping(actor_id_t target, ping_type type);
         void send_speculative_request(actor_id_t target);
 
-        client_model::client_work_model work;
+        client_work_spec work;
 
         std::shared_ptr<kcache_global_state> global;
         std::shared_ptr<kademlia_activity> kademlia;

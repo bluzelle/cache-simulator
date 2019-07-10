@@ -1,9 +1,10 @@
-Implement client models
+Extract more statistics
 
 Quantify what is not accurately simulated
   - steady state
 Prepare to talk about it
 
+parameterize
 multithreading?
 
 Conclusions:

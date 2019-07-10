@@ -18,7 +18,7 @@ namespace ksim
     {
     public:
         matchmaking_lobby_client_type(const location_model& loc);
-        virtual client_model::client_work_model generate(location_model::location_t loc) override;
+        virtual client_work_spec generate(location_model::location_t loc) override;
 
     private:
         region_model regions;

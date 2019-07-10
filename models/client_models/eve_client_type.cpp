@@ -6,7 +6,7 @@ eve_client_type::eve_client_type()
     : regions(this->virtual_location_model, 10, 10)
 {}
 
-client_model::client_work_model eve_client_type::generate(ksim::location_model::location_t /*loc*/)
+client_work_spec eve_client_type::generate(ksim::location_model::location_t /*loc*/)
 {
     auto virtual_loc = this->virtual_location_model.pick_location();
     auto key = this->regions.region_key(virtual_loc);
@@ -19,7 +19,7 @@ client_model::client_work_model eve_client_type::generate(ksim::location_model::
         this->chunks[key] += "]";
     }
 
-    client_model::client_work_model work;
+    client_work_spec work;
     work.chunk = this->chunks.at(key);
     work.name = "eve client";
 

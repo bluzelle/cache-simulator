@@ -1,4 +1,3 @@
-#pragma once
 #include <models/client_models/matchmaking_lobby_client_type.hpp>
 
 using namespace ksim;
@@ -7,13 +6,13 @@ matchmaking_lobby_client_type::matchmaking_lobby_client_type(const location_mode
     : regions(loc, this->x_cells, this->y_cells)
 {}
 
-client_model::client_work_model matchmaking_lobby_client_type::generate(ksim::location_model::location_t loc)
+client_work_spec matchmaking_lobby_client_type::generate(ksim::location_model::location_t loc)
 {
     auto my_key = this->regions.region_key(loc);
     auto dx = this->rand.next_int_inclusive(-this->x_range, this->x_range);
     auto dy = this->rand.next_int_inclusive(-this->y_range, this->y_range);
 
-    auto target_key = this->regions.clip(my_key.first + dx, my_key.second + dx);
+    auto target_key = this->regions.clip(my_key.first + dx, my_key.second + dy);
 
     if (this->chunks.count(target_key) == 0)
     {
@@ -21,7 +20,7 @@ client_model::client_work_model matchmaking_lobby_client_type::generate(ksim::lo
         this->chunks[target_key] += "[matchmaking data chunk for " + region_model::to_string(target_key) + "]";
     }
 
-    client_model::client_work_model work;
+    client_work_spec work;
     work.chunk = this->chunks.at(target_key);
     work.name = "matchmaking client";
 

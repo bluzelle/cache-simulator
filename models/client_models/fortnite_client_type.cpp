@@ -6,10 +6,10 @@ fortnite_client_type::fortnite_client_type(const ksim::location_model& location_
     : regions(location_model, 3, 3)
 {}
 
-client_model::client_work_model fortnite_client_type::generate(ksim::location_model::location_t loc)
+client_work_spec fortnite_client_type::generate(ksim::location_model::location_t loc)
 {
     auto key = this->regions.region_key(loc);
-    client_model::client_work_model work;
+    client_work_spec work;
 
     if (this->rand.next_int_inclusive(0, 1) == 0)
     {

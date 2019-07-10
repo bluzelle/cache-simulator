@@ -4,6 +4,7 @@ add_library(models STATIC
         location_model.cpp
         location_model.hpp
         client_model.cpp client_model.hpp
+        client_work_spec.hpp
         client_models/eve_client_type.cpp client_models/eve_client_type.hpp
         client_models/fortnite_client_type.hpp client_models/fortnite_client_type.cpp
         client_models/matchmaking_lobby_client_type.hpp client_models/matchmaking_lobby_client_type.cpp

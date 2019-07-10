@@ -22,7 +22,7 @@ namespace ksim
     public:
         eve_client_type();
 
-        virtual client_model::client_work_model generate(location_model::location_t loc) override;
+        virtual client_work_spec generate(location_model::location_t loc) override;
 
     private:
         location_model virtual_location_model;

@@ -4,4 +4,5 @@ using namespace ksim;
 
 sim_config::sim_config()
     : latency()
+    , clients(this->location)
 {}
