@@ -9,8 +9,8 @@ matchmaking_lobby_client_type::matchmaking_lobby_client_type(const location_mode
 client_work_spec matchmaking_lobby_client_type::generate(ksim::location_model::location_t loc)
 {
     auto my_key = this->regions.region_key(loc);
-    auto dx = this->rand.next_int_inclusive(-this->x_range, this->x_range);
-    auto dy = this->rand.next_int_inclusive(-this->y_range, this->y_range);
+    auto dx = this->rand.next_int_inclusive(-1*this->x_range, this->x_range);
+    auto dy = this->rand.next_int_inclusive(-1*this->y_range, this->y_range);
 
     auto target_key = this->regions.clip(my_key.first + dx, my_key.second + dy);
 
