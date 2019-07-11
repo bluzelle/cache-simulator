@@ -13,8 +13,10 @@ namespace ksim
 
         virtual void finalize(){throw std::runtime_error("not implemented");};
         virtual ~statistic() = default;
+        void update_time(unsigned long new_time);
 
     protected:
         std::string name;
+        unsigned long current_time = 0;
     };
 }

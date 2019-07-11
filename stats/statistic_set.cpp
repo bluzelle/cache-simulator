@@ -10,3 +10,14 @@ statistic_set::finalize()
         stat.second->finalize();
     }
 }
+
+void
+statistic_set::update_time(unsigned long new_time)
+{
+    this->time = new_time;
+    for(const auto& stat_pair : this->stats)
+    {
+        stat_pair.second->update_time(new_time);
+    }
+}
+
