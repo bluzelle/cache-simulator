@@ -30,7 +30,9 @@ client_model::get_workload(const ksim::location_model::location_t location)
     {
         if (choice_weight < pair.second)
         {
-            return pair.first->generate(location);
+            auto work = pair.first->generate(location);
+            work.requests_per_unit_time *= this->rand.next_float_inclusive_exclusive(1.0, 2.0);
+            return work;
         }
 
         choice_weight -= pair.second;

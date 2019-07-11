@@ -8,7 +8,7 @@ client_work_spec random_client_type::generate(ksim::location_model::location_t /
     if(this->chunks.count(choice) == 0)
     {
         this->chunks[choice] = this->rand.next_string(20);
-        this->chunks[choice] += "[random client data chunk " + std::to_string(choice) + "]";
+        this->chunks[choice] += " [random client data chunk " + std::to_string(choice) + "]";
     }
 
     client_work_spec work;

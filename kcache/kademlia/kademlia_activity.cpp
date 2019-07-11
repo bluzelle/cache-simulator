@@ -197,7 +197,7 @@ void kademlia_activity::ingest(const kcache_node_reference& peer)
 
 void kademlia_activity::start()
 {
-    this->log << "kademlia routing " << this->k_id << "starting\n";
+    this->log << "kademlia routing " << this->k_id << " starting\n";
     for (auto peer : this->seed_peers)
     {
         if (peer != this->address())

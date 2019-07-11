@@ -119,13 +119,13 @@ cache_client_activity::finalize()
     this->log << "Client of chunk " << this->work.chunk
               << " using authoratitive source at " << this->closest_authoratative_source_latency
               << " rtt and cache at " << this->closest_cache_latency
-              << " rtt\n";
+              << " rtt on actors " << this->closest_authoratative_source << ", " << this->closest_cache << "\n";
 
     this->stats().record_data_point("final authoratitive latency", this->closest_authoratative_source_latency);
-    this->stats().record_data_point("final cache latency", this->closest_cache_latency);
+    this->stats().record_data_point("final cache latency", std::min(this->closest_authoratative_source_latency, this->closest_cache_latency));
 
     //force to double so that negative differences work
-    this->stats().record_data_point("final cache advantage", (1.0*this->closest_authoratative_source_latency) - (1.0*this->closest_cache_latency));
+    this->stats().record_data_point("final cache advantage", (1.0*this->closest_authoratative_source_latency) - (1.0*std::min(this->closest_authoratative_source_latency, this->closest_cache_latency)));
 }
 
 void

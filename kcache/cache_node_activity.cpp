@@ -98,3 +98,13 @@ cache_node_activity::tick() {
 
     this->start_timer(this->global->config.cache_choice_update_interval, [&](){this->tick();});
 }
+
+void
+cache_node_activity::finalize()
+{
+    this->log << "cache node final cache set:\n";
+    for(const auto& chunk : this->current_cached_chunks)
+    {
+        this->log << "  " << chunk << "\n";
+    }
+}

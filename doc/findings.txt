@@ -1,0 +1,4 @@
+This is not a fire and forget thing. Spinning up a client will have nontrivial cost, and keeping it running over time is ideal. 
+
+What if a client wants their data to be low latency, is willing to pay for that to happen, but doesn't actually make enough queries to justify that?
+- implication: the cache replacement algorithm needs to consider pricing

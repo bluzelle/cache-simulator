@@ -1,6 +1,7 @@
 #include <actors/actor_system.hpp>
 #include <iostream>
 #include <random/random.hpp>
+#include <csignal>
 
 using namespace ksim;
 
@@ -38,13 +39,21 @@ actor_system::ensure_actors_set_exists(long time)
     }
 }
 
+bool canceled = false;
+void cancel(int /*signum*/)
+{
+    canceled = true;
+}
+
 void
 actor_system::run_until(long time)
 {
     random rand;
     unsigned long messages_processed = 0;
 
-    while (!this->actors_with_pending_messages.empty() && this->actors_with_pending_messages.begin()->first <= time)
+    signal(SIGINT, cancel);
+
+    while (!canceled && !this->actors_with_pending_messages.empty() && this->actors_with_pending_messages.begin()->first <= time)
     {
         long next_tick = this->actors_with_pending_messages.begin()->first;
         auto to_act = this->actors_with_pending_messages.at(next_tick).first;
@@ -59,6 +68,11 @@ actor_system::run_until(long time)
             }
             messages_processed += delta;
         }
+    }
+
+    if(canceled)
+    {
+        this->log << "quitting early in response to keyboard interrupt";
     }
 }
 
