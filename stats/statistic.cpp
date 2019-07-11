@@ -1,5 +1,7 @@
-//
-// Created by isabel on 11/07/19.
-//
+#include <stats/statistic.hpp>
 
-#include "statistic.hpp"
+using namespace ksim;
+
+statistic::statistic(const std::string& name)
+    : name(name)
+{}

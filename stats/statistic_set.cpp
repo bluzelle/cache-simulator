@@ -1,5 +1,12 @@
-//
-// Created by isabel on 11/07/19.
-//
+#include <stats/statistic_set.hpp>
 
-#include "statistic_set.hpp"
+using namespace ksim;
+
+void 
+statistic_set::finalize()
+{
+    for(const auto& stat: this->stats){
+        // find a directory and pass it
+        stat.finalize();
+    }
+}
