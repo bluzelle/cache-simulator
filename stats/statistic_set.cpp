@@ -7,6 +7,6 @@ statistic_set::finalize()
 {
     for(const auto& stat: this->stats){
         // find a directory and pass it
-        stat.finalize();
+        stat.second->finalize();
     }
 }

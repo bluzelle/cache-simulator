@@ -34,5 +34,5 @@ void simulation::run()
     this->system.finalize();
 
     this->log.say("\n\nfinal stats");
-    this->log.say(this->stats.to_string());
+    this->stats.finalize();
 }

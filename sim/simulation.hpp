@@ -3,7 +3,7 @@
 #include <kcache/knode.hpp>
 #include <kcache/kcache_global_state.hpp>
 #include <config/sim_config.hpp>
-#include <stats/stats.hpp>
+#include <stats/statistic_set.hpp>
 #include <log/log.hpp>
 
 namespace ksim
@@ -15,7 +15,7 @@ namespace ksim
 
         void run();
 
-        ksim::stats stats;
+        statistic_set stats;
 
     private:
         sim_config config;

@@ -2,6 +2,8 @@
 
 #include <vector>
 #include <stats/statistic.hpp>
+#include <sstream>
+#include <iomanip>
 
 namespace ksim
 {
@@ -13,7 +15,7 @@ namespace ksim
     public:
         collection_stat(const std::string& name) : statistic(name){}
 
-        void record(const T& t) override
+        void record(const T& t)
         {
             this->data.push_back(t);
         }
@@ -30,6 +32,7 @@ namespace ksim
             T sum = std::accumulate(this->data.begin(), this->data.end(), 0);
             T mean = sum/this->data.size();
 
+            std::ostringstream ss;
             ss << this->name << ": percentiles ["
                     << p1 << "/"
                     << p10 << "/"
@@ -40,14 +43,12 @@ namespace ksim
 
             std::cout << ss.str();
 
-            for(unsigned int i = 0; i<this->data.size() i++)
-            {
-                std::cout << i << " " << this->data.at(i) << "\n";
-            }
+            //for(unsigned int i = 0; i<this->data.size(); i++)
+            //{
+            //    std::cout << i << " " << this->data.at(i) << "\n";
+            //}
         }
     private:
         std::vector<T> data;
-    }
-
-
+    };
 }

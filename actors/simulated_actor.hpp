@@ -7,7 +7,7 @@
 #include <models/location_model.hpp>
 #include <functional>
 #include <actors/activity.hpp>
-#include <stats/stats.hpp>
+#include <stats/statistic_set.hpp>
 #include <log/log.hpp>
 
 
@@ -59,7 +59,7 @@ namespace ksim
 
         userspace_message_t current_message;
 
-        ksim::stats& stats();
+        ksim::statistic_set& stats();
 
         ksim::log log;
 

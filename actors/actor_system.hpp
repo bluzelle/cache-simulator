@@ -5,7 +5,7 @@
 #include <set>
 #include <mutex>
 #include <shared_mutex>
-#include <stats/stats.hpp>
+#include <stats/statistic_set.hpp>
 #include <log/log.hpp>
 
 namespace ksim
@@ -13,7 +13,7 @@ namespace ksim
     class actor_system
     {
     public:
-        actor_system(const latency_model& latency, location_model& location, stats& stats);
+        actor_system(const latency_model& latency, location_model& location, statistic_set& stats);
 
         actor_id_t register_actor(simulated_actor* registrant);
 
@@ -26,7 +26,7 @@ namespace ksim
         const latency_model& latency;
         location_model& location;
 
-        ksim::stats& stats;
+        ksim::statistic_set& stats;
 
         ksim::log log{"actorsys"};
 

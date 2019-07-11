@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+#include <stdexcept>
 
 namespace ksim
 {
@@ -7,10 +9,9 @@ namespace ksim
     public:
         statistic(const std::string& name);
 
-        template <typename T>
-        virtual void record_point(T){throw std::runtime_error("unimplemented");}
+        // notably we do not implement something like record(T t) here
 
-        virtual void finalize(){};
+        virtual void finalize(){throw std::runtime_error("not implemented");};
         virtual ~statistic() = default;
 
     protected:

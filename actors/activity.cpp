@@ -79,7 +79,7 @@ activity::finalize()
 {
 }
 
-stats& activity::stats()
+statistic_set& activity::stats()
 {
     return this->owner->stats();
 }

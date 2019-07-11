@@ -1,7 +1,7 @@
 #pragma once
 #include <include/types.hpp>
 #include <functional>
-#include <stats/stats.hpp>
+#include <stats/statistic_set.hpp>
 #include <log/log.hpp>
 
 namespace ksim
@@ -30,7 +30,7 @@ namespace ksim
         actor_id_t address();
         void start_timer(unsigned long delay, std::function<void()> callback);
 
-        ksim::stats& stats();
+        ksim::statistic_set& stats();
 
         ksim::log log;
 

@@ -1,4 +1,5 @@
 #include <kcache/cache_client_activity.hpp>
+#include <stats/collection_stat.hpp>
 
 using namespace ksim::kcache;
 
@@ -121,11 +122,10 @@ cache_client_activity::finalize()
               << " rtt and cache at " << this->closest_cache_latency
               << " rtt on actors " << this->closest_authoratative_source << ", " << this->closest_cache << "\n";
 
-    this->stats().record_data_point("final authoratitive latency", this->closest_authoratative_source_latency);
-    this->stats().record_data_point("final cache latency", std::min(this->closest_authoratative_source_latency, this->closest_cache_latency));
-
-    //force to double so that negative differences work
-    this->stats().record_data_point("final cache advantage", (1.0*this->closest_authoratative_source_latency) - (1.0*std::min(this->closest_authoratative_source_latency, this->closest_cache_latency)));
+    this->stats().stat<collection_stat<unsigned long>>("final authoratitive latency").record(this->closest_authoratative_source_latency);
+    auto cache = std::min(this->closest_cache_latency, this->closest_authoratative_source_latency);
+    this->stats().stat<collection_stat<unsigned long>>("final cache latency").record(cache);
+    this->stats().stat<collection_stat<unsigned long>>("final cache advantage").record(this->closest_authoratative_source_latency - cache);
 }
 
 void

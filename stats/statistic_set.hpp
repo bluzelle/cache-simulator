@@ -2,6 +2,8 @@
 
 #include <stats/statistic.hpp>
 #include <vector>
+#include <map>
+#include <memory>
 
 namespace ksim
 {
@@ -9,14 +11,14 @@ namespace ksim
     {
     public:
         template <class T>
-        statistic& operator(const std::string& name)
+        T& stat(const std::string& name)
         {
             if(this->stats.count(name) == 0)
             {
-                this->stats.insert(name, std::make_unique<T>());
+                this->stats.insert(std::make_pair(name, std::make_unique<T>(name)));
             }
 
-            return this->stats.at(name);
+            return *dynamic_cast<T*>(this->stats.at(name).get());
         }
 
         void finalize();
