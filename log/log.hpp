@@ -22,11 +22,13 @@ namespace ksim
             return *this;
         }
 
+        void set_prefix(const std::string& str);
+
     private:
 
         void say(const std::string& message, const std::string& prefix);
 
-        const std::string name;
+        std::string name;
         const std::optional<log*> parent;
 
         std::string buffer;

@@ -15,7 +15,7 @@ void log::say(const std::string& message)
 
 void log::say(const std::string& message, const std::string& prefix)
 {
-    std::string my_prefix = this->name + "_" + prefix;
+    std::string my_prefix = this->name + "|" + prefix;
 
     if(this->parent.has_value())
     {
@@ -76,4 +76,10 @@ log::operator<<(const char* str)
 {
     this->ingest(std::string(str));
     return *this;
+}
+
+void
+log::set_prefix(const std::string& str)
+{
+    this->name = str;
 }

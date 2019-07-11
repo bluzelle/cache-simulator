@@ -28,6 +28,8 @@ namespace ksim
 
         ksim::stats& stats;
 
+        ksim::log log{"actorsys"};
+
     private:
         void ensure_actors_set_exists(long time);
 
@@ -37,6 +39,5 @@ namespace ksim
         actor_id_t next_id = 1;
         std::map<actor_id_t, simulated_actor*> id_map;
 
-        ksim::log log{"actor system"};
     };
 }

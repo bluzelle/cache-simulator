@@ -8,7 +8,7 @@ using namespace ksim;
 simulated_actor::simulated_actor(actor_system& system)
         : id(system.register_actor(this))
         , location(system.location.pick_location())
-        , log("actor" + std::to_string(this->id))
+        , log("actor" + std::to_string(this->id), &(system.log))
         , system(system)
 {
 }

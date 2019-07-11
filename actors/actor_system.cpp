@@ -56,6 +56,7 @@ actor_system::run_until(long time)
     while (!canceled && !this->actors_with_pending_messages.empty() && this->actors_with_pending_messages.begin()->first <= time)
     {
         long next_tick = this->actors_with_pending_messages.begin()->first;
+        this->log.set_prefix("actorsys t" + std::to_string(next_tick));
         auto to_act = this->actors_with_pending_messages.at(next_tick).first;
         this->actors_with_pending_messages.erase(next_tick);
 
