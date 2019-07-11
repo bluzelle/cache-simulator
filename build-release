@@ -1,0 +1,7 @@
+set -e
+
+mkdir -p build-output
+cd build-output
+cmake -DCMAKE_BUILD_TYPE=Release ..
+make
+cp output/sim ../run
