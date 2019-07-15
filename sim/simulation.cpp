@@ -31,8 +31,41 @@ void simulation::run()
     }
 
     this->system.run_until(this->config.duration);
-    this->system.finalize();
 
-    this->log.say("\n\nfinal stats");
-    this->stats.finalize();
+    this->finalize();
+}
+
+void simulation::finalize()
+{
+    this->system.finalize();
+    auto output_root = this->find_output_dir();
+    std::experimental::filesystem::create_directory(output_root);
+    this->stats.finalize(output_root);
+}
+
+std::experimental::filesystem::path simulation::find_output_dir()
+{
+    auto root_output_dir = std::experimental::filesystem::current_path() / std::experimental::filesystem::path("results");
+
+    if(std::experimental::filesystem::exists(root_output_dir) && !std::experimental::filesystem::is_directory(root_output_dir))
+    {
+        throw std::runtime_error("output dir is not a dir");
+    }
+
+    if(!std::experimental::filesystem::exists(root_output_dir))
+    {
+        std::experimental::filesystem::create_directory(root_output_dir);
+    }
+
+    for(unsigned int i = 0; true; i++)
+    {
+        auto p2 = root_output_dir / std::experimental::filesystem::path{std::to_string(i)};
+        if (!std::experimental::filesystem::exists(p2))
+        {
+            std::experimental::filesystem::create_directory(p2);
+            this->log << "output dir: " << std::string(p2.string()) << "\n";
+            return p2;
+        }
+    }
+
 }

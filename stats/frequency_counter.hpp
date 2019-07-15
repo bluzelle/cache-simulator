@@ -19,6 +19,8 @@ namespace ksim
 
         void finalize() override;
 
+        bool generates_graph() override {return false;}
+
     private:
         unsigned long total;
         std::map<unsigned long, unsigned long> counts;

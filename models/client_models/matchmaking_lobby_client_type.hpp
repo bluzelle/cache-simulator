@@ -21,10 +21,10 @@ namespace ksim
         virtual client_work_spec generate(location_model::location_t loc) override;
 
     private:
-        const unsigned int x_cells = 10;
-        const unsigned int y_cells = 10;
-        const int x_range = 3;
-        const int y_range = 3;
+        const unsigned int x_cells = 20;
+        const unsigned int y_cells = 20;
+        const int x_range = 4;
+        const int y_range = 4;
         region_model regions;
 
         std::map<region_model::key_t, chunk_id_t> chunks;

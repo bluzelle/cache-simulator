@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stats/statistic.hpp>
+#include <map>
 
 namespace ksim
 {
@@ -12,11 +13,13 @@ namespace ksim
 
         void finalize() override;
 
-        void record(const std::string& value, unsigned long amount = 0);
+        void record(const std::string& value, unsigned long amount = 1);
+
+        bool generates_graph() override {return false;}
 
     private:
 
         std::map<std::string, unsigned long> counts;
-    }
+    };
 }
 

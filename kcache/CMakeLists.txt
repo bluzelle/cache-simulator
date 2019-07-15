@@ -13,6 +13,6 @@ add_library(kcache STATIC
         cache_node_activity.hpp
         kcache_config.hpp cache_client_activity.cpp cache_client_activity.hpp)
 
-target_link_libraries(kcache actors models proto random ${Protobuf_LIBRARIES})
+target_link_libraries(kcache actors models proto random ${Protobuf_LIBRARIES} stdc++fs)
 target_include_directories(kcache PRIVATE ${PROTO_INCLUDE_DIR})
 add_dependencies(kcache proto)

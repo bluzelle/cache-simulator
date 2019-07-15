@@ -3,4 +3,6 @@ run
 *.swp
 .idea/
 cmake-build-debug/
+cmake-build-*
+results
 *.log

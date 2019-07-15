@@ -1,7 +1,8 @@
-Extract more statistics
-and output them somewhere
+Output statistics to a file w/ graphs
+Add every statistic that seems useful
+  Think about what we're going to want to ask. What do we need to ask those questions?
 
-Plan is to run the best sim or set of sims I can over the weekend; get a script for it so I can run it overnight
+Then run the most realistic simulation I can, and present the conclusions.
 
 Quantify what is not accurately simulated
   - steady state

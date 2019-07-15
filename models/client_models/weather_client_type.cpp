@@ -4,7 +4,7 @@
 using namespace ksim;
 
 weather_client_type::weather_client_type(const location_model& loc)
-    : regions(loc, 100, 100)
+    : regions(loc, 30, 30)
 {}
 
 client_work_spec weather_client_type::generate(ksim::location_model::location_t loc)

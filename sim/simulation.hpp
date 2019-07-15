@@ -5,6 +5,7 @@
 #include <config/sim_config.hpp>
 #include <stats/statistic_set.hpp>
 #include <log/log.hpp>
+#include <experimental/filesystem>
 
 namespace ksim
 {
@@ -18,6 +19,10 @@ namespace ksim
         statistic_set stats;
 
     private:
+        void finalize();
+
+        std::experimental::filesystem::path find_output_dir();
+
         sim_config config;
         actor_system system;
 

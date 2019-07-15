@@ -4,6 +4,8 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include <experimental/filesystem>
+#include <log/log.hpp>
 
 namespace ksim
 {
@@ -24,11 +26,12 @@ namespace ksim
 
         void update_time(unsigned long new_time);
 
-        void finalize();
+        void finalize(const std::experimental::filesystem::path& path);
 
     private:
         std::map<std::string, std::unique_ptr<statistic>> stats;
         unsigned long time = 0;
+        ksim::log log{"statistic set"};
     };
 }
 

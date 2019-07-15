@@ -1,4 +1,6 @@
 #include <kcache/cache_node_activity.hpp>
+#include <stats/set_frequency_counter.hpp>
+#include <stats/collection_stat.hpp>
 
 using namespace ksim::kcache;
 
@@ -106,5 +108,8 @@ cache_node_activity::finalize()
     for(const auto& chunk : this->current_cached_chunks)
     {
         this->log << "  " << chunk << "\n";
+        this->stats().stat<set_frequency_counter>("cached chunks").record(chunk);
+        this->stats().stat<collection_stat<unsigned long>>("cache chunks per node").record(this->current_cached_chunks.size());
     }
+
 }

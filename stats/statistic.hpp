@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include <stdexcept>
+#include <iostream>
+#include <experimental/filesystem>
 
 namespace ksim
 {
@@ -13,6 +15,12 @@ namespace ksim
 
         virtual void finalize(){throw std::runtime_error("not implemented");};
         virtual ~statistic() = default;
+
+        virtual void summarize(std::ostream& /*strm*/){};
+        virtual void report(const std::experimental::filesystem::path& /*dir*/){};
+
+        virtual bool generates_graph() = 0;
+
         void update_time(unsigned long new_time);
 
     protected:

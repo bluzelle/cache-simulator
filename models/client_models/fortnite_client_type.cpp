@@ -3,7 +3,7 @@
 using namespace ksim;
 
 fortnite_client_type::fortnite_client_type(const ksim::location_model& location_model)
-    : regions(location_model, 3, 3)
+    : regions(location_model, 4, 4)
 {}
 
 client_work_spec fortnite_client_type::generate(ksim::location_model::location_t loc)
