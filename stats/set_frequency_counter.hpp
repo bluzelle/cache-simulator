@@ -13,6 +13,10 @@ namespace ksim
 
         void finalize() override;
 
+        void report(const std::experimental::filesystem::path& dir) override;
+
+        void summarize(std::ostream& str) override;
+
         void record(const std::string& value, unsigned long amount = 1);
 
         bool generates_graph() override {return false;}
@@ -20,6 +24,7 @@ namespace ksim
     private:
 
         std::map<std::string, unsigned long> counts;
+        std::vector<std::string> sorted;
     };
 }
 
