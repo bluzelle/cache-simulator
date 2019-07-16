@@ -66,7 +66,7 @@ namespace ksim
 
             ss << "set term png size 1280, 960\n";
             ss << "set output " << chart_path << "\n";
-            ss << "plot " << data_path << "\n";
+            ss << "plot " << data_path << " with points \n";
         }
 
         bool generates_graph() override {return true;}

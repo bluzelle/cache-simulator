@@ -21,20 +21,32 @@ frequency_counter::record(unsigned long amount)
 }
 
 void
-frequency_counter::finalize() override
+frequency_counter::finalize()
 {
-    long mean = (1.0 * this->total) / (1.0 * this->time);
+    for (const auto& pair : this->counts)
+    {
+        auto time = pair.first;
+        auto amount = pair.second;
+        this->average_counts[time] += amount;
+    }
 
-    //summary
-    std::cout 
-        << this->name 
-        << ": total " << this->total 
-        << " mean " << this->mean << " events/tick\n";
-
-//    //graph
-//    for(const auto& pair : this->counts)
-//    {
-//        std::cout << pair.first << " " << pair.second << "\n";
-//    }
+    for (const auto& pair : this->average_counts)
+    {
+        this->average_counts[pair.first] = pair.second / this->average_interval;
+    }
 }
 
+void
+frequency_counter::report(const std::experimental::filesystem::path&)
+{
+    // need to add functions that conveniently yield graph/script/data file paths to statistic
+}
+
+void
+frequency_counter::summarize(std::ostream& os)
+{
+    long mean = (1.0 * this->total) / (1.0 * this->time);
+    long last = this->counts.end()->second;
+
+    os << this->name << " mean value " << mean << " final value " << last;
+}
