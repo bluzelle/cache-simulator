@@ -1,4 +1,3 @@
-Output statistics to a file w/ graphs
 Add every statistic that seems useful
   Think about what we're going to want to ask. What do we need to ask those questions?
 

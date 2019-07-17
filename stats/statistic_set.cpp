@@ -27,14 +27,15 @@ statistic_set::finalize(const std::experimental::filesystem::path& path)
         auto stat_dir = path / std::experimental::filesystem::path{fname};
         std::experimental::filesystem::create_directory(stat_dir);
 
+        stat.second->set_path(stat_dir);
         stat.second->finalize();
         stat.second->summarize(summary_stream);
-        stat.second->report(stat_dir);
+        stat.second->report();
 
-        if(stat.second->generates_graph())
+        if(stat.second->graph_generated())
         {
-            ss << "gnuplot " << (stat_dir / std::experimental::filesystem::path("script.gnuplot")) << "\n";
-            ss << "cp " << (stat_dir / std::experimental::filesystem::path("graph.png"));
+            ss << "gnuplot " << stat.second->script_path() << "\n";
+            ss << "cp " << stat.second->graph_path();
             ss << " " << (graphs_path / std::experimental::filesystem::path(fname + ".png")) << "\n";
         }
     }

@@ -17,14 +17,27 @@ namespace ksim
         virtual ~statistic() = default;
 
         virtual void summarize(std::ostream& /*strm*/){};
-        virtual void report(const std::experimental::filesystem::path& /*dir*/){};
+        virtual void report(){};
 
-        virtual bool generates_graph() = 0;
+        void set_path(const std::experimental::filesystem::path& path);
+
+        std::experimental::filesystem::path graph_path();
+        std::experimental::filesystem::path script_path();
+        std::experimental::filesystem::path data_path(const std::string& name = "data");
+
+        bool graph_generated();
 
         void update_time(unsigned long new_time);
 
     protected:
         std::string name;
         unsigned long current_time = 0;
+
+    private:
+        std::experimental::filesystem::path named_path(const std::string&);
+
+        std::experimental::filesystem::path root_path;
+
+        bool graph_path_used = false;
     };
 }

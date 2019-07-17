@@ -50,26 +50,23 @@ namespace ksim
 
         }
 
-        void report(const std::experimental::filesystem::path& dir) override
+        void report() override
         {
-            auto data_path = dir / std::experimental::filesystem::path("data");
-            std::ofstream fs(data_path);
+            std::ofstream fs(this->data_path());
 
             for(unsigned int i=0; i<this->data.size(); i++)
             {
                 fs << i << " " << this->data.at(i) << "\n";
             }
 
-            auto chart_path = dir / std::experimental::filesystem::path("graph.png");
-            auto script_path = dir / std::experimental::filesystem::path("script.gnuplot");
-            std::ofstream ss(script_path);
+            std::ofstream ss(this->script_path());
 
             ss << "set term png size 1280, 960\n";
-            ss << "set output " << chart_path << "\n";
-            ss << "plot " << data_path << " with points \n";
+            ss << "set output " << this->graph_path() << "\n";
+            ss << "set title '" << this->name << "'\n";
+            ss << "plot " << this->data_path() << " with points \n";
         }
 
-        bool generates_graph() override {return true;}
     private:
         std::vector<T> data;
     };

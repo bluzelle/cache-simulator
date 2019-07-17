@@ -27,10 +27,9 @@ set_frequency_counter::finalize()
 }
 
 void
-set_frequency_counter::report(const std::experimental::filesystem::path& dir)
+set_frequency_counter::report()
 {
-    auto data_path = dir / std::experimental::filesystem::path("data.txt");
-    std::ofstream fs(data_path);
+    std::ofstream fs(this->data_path());
 
     for(const auto& item : this->sorted)
     {

@@ -20,14 +20,12 @@ namespace ksim
         void finalize() override;
 
         void summarize(std::ostream& /*strm*/);
-        void report(const std::experimental::filesystem::path& /*dir*/);
-
-        bool generates_graph() override {return false;}
+        void report();
 
     private:
         unsigned long total;
-        const unsigned long average_interval;
+        const unsigned long average_interval = 1000;
         std::map<unsigned long, unsigned long> counts;
-        std::map<unsigned long, unsigned long> average_counts;
-    }
+        std::map<unsigned long, double> average_counts;
+    };
 }

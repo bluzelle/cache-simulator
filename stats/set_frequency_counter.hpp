@@ -13,13 +13,11 @@ namespace ksim
 
         void finalize() override;
 
-        void report(const std::experimental::filesystem::path& dir) override;
+        void report() override;
 
         void summarize(std::ostream& str) override;
 
         void record(const std::string& value, unsigned long amount = 1);
-
-        bool generates_graph() override {return false;}
 
     private:
 

@@ -1,5 +1,6 @@
 #include <kcache/cache_client_activity.hpp>
 #include <stats/collection_stat.hpp>
+#include <stats/frequency_counter.hpp>
 
 using namespace ksim::kcache;
 
@@ -43,6 +44,7 @@ cache_client_activity::handle_message(const ksim::userspace_message_t& msg)
                         this->log << "new auth source at " << parsed.ping().target() << " latency " << latency << "\n";
                         this->closest_authoratative_source = parsed.ping().target();
                         this->closest_authoratative_source_latency = latency;
+                        this->stats().stat<frequency_counter>("authoratitive source upgrade").tick();
                     }
                     break;
                 case ping_type::cache:
@@ -51,6 +53,7 @@ cache_client_activity::handle_message(const ksim::userspace_message_t& msg)
                         this->log << "new cache source at " << parsed.ping().target() << " latency " << latency << "\n";
                         this->closest_cache = parsed.ping().target();
                         this->closest_cache_latency = latency;
+                        this->stats().stat<frequency_counter>("cache source upgrade").tick();
                     }
                     break;
                 default:
