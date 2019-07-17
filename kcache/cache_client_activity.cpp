@@ -9,7 +9,7 @@ cache_client_activity::cache_client_activity(ksim::simulated_actor *owner, unsig
                                              std::shared_ptr<ksim::kcache::kademlia_activity> kademlia,
                                              const client_work_spec& work)
 
-    : activity(owner, id)
+    : activity(owner, id, "cache client")
     , work(work)
     , global(global)
     , kademlia(kademlia)

@@ -6,6 +6,7 @@
 #include <set>
 #include <random/random.hpp>
 #include <log/log.hpp>
+#include <stats/statistic_set.hpp>
 
 namespace ksim::kcache
 {
@@ -14,7 +15,7 @@ namespace ksim::kcache
     public:
         using peer_record_t = std::pair<node_id_t, ksim::actor_id_t>;
 
-        kademlia_routing_table(node_id_t id, unsigned int bucket_size, ksim::log* log_parent);
+        kademlia_routing_table(node_id_t id, unsigned int bucket_size, ksim::log* log_parent, ksim::statistic_set& stats);
 
         void insert(node_id_t kid, ksim::actor_id_t, unsigned int latency);
         bool contains(node_id_t kid, ksim::actor_id_t id) const;
@@ -28,6 +29,8 @@ namespace ksim::kcache
 
         unsigned int size() const;
 
+        void finalize();
+
     private:
 
         std::set<peer_record_t> peers;
@@ -40,6 +43,7 @@ namespace ksim::kcache
         unsigned int bucket_size;
 
         ksim::log log;
+        ksim::statistic_set& stats;
     };
 
 }

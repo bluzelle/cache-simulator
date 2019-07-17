@@ -1,12 +1,13 @@
 #include <kcache/cache_node_activity.hpp>
 #include <stats/set_frequency_counter.hpp>
 #include <stats/collection_stat.hpp>
+#include <stats/frequency_counter.hpp>
 
 using namespace ksim::kcache;
 
 cache_node_activity::cache_node_activity(ksim::simulated_actor *owner, unsigned int id,
                                          std::shared_ptr<ksim::kcache::kcache_global_state> global)
-        : activity(owner, id)
+        : activity(owner, id, "cache node")
         , global(global)
 {
 }
@@ -92,6 +93,7 @@ cache_node_activity::tick() {
         this->log << "stopping cache of " << chunk << "\n";
         this->global->stop_caching(this->address(), chunk);
     }
+    this->stats().stat<frequency_counter>("cache chunks changed").record(added.size() + removed.size());
 
     this->current_cached_chunks = new_chunks;
     this->chunk_desires.clear();

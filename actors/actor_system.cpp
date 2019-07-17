@@ -2,6 +2,7 @@
 #include <iostream>
 #include <random/random.hpp>
 #include <csignal>
+#include <stats/frequency_counter.hpp>
 
 using namespace ksim;
 
@@ -21,6 +22,8 @@ actor_system::send(long send_time, actor_id_t sender, actor_id_t target, const k
     std::shared_lock<std::shared_mutex> lock(this->pending_actors_lock);
     std::lock_guard<std::mutex> lock2(this->actors_with_pending_messages.at(dest_time).second);
     this->actors_with_pending_messages.at(dest_time).first.insert(target);
+
+    this->stats.stat<frequency_counter>("messages sent").tick();
 }
 
 void
@@ -69,6 +72,7 @@ actor_system::run_until(long time)
                 this->log << messages_processed+delta << " total messages processed\n";
             }
             messages_processed += delta;
+            this->stats.stat<frequency_counter>("messages delivered").record(delta);
         }
     }
 

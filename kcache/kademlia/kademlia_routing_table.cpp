@@ -1,13 +1,17 @@
 #include <kcache/kademlia/kademlia_routing_table.hpp>
 #include <algorithm>
 #include <vector>
+#include <stats/statistic_set.hpp>
+#include <stats/frequency_counter.hpp>
+#include <stats/collection_stat.hpp>
 
 using namespace ksim::kcache;
 
-kademlia_routing_table::kademlia_routing_table(ksim::kcache::node_id_t id, unsigned int bucket_size, ksim::log* log_parent)
+kademlia_routing_table::kademlia_routing_table(ksim::kcache::node_id_t id, unsigned int bucket_size, ksim::log* log_parent, ksim::statistic_set& stats)
     : my_id(id)
     , bucket_size(bucket_size)
     , log("peers", log_parent)
+    , stats(stats)
 {
 }
 
@@ -33,8 +37,16 @@ void kademlia_routing_table::insert(ksim::kcache::node_id_t kid, ksim::actor_id_
 
         auto r = (*(this->buckets[bucket].rbegin()));
         this->log << "removing " << r.second.first << " at " << r.first << "rtt \n";
+        if (r.second.first != kid)
+        {
+            this->stats.stat<frequency_counter>("routing table upgrade").tick();
+        }
 
         this->buckets[bucket].erase(*(this->buckets[bucket].rbegin()));
+    }
+    else
+    {
+        this->stats.stat<frequency_counter>("routing table insert").tick();
     }
 }
 
@@ -145,3 +157,16 @@ std::set<kademlia_routing_table::peer_record_t> kademlia_routing_table::peers_cl
     return result_set;
 }
 
+void
+kademlia_routing_table::finalize()
+{
+    for (const auto& bucket : this->buckets)
+    {
+        auto& stat = this->stats.stat<ksim::collection_stat<unsigned long>>("peer latency for bucket " + std::to_string(bucket.first));
+        for (const auto& bucket_entry : bucket.second)
+        {
+            stat.record(bucket_entry.first);
+        }
+    }
+
+}

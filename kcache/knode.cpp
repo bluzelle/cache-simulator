@@ -4,6 +4,7 @@
 #include <actors/simulated_actor.hpp>
 #include <iostream>
 #include <proto/kcache.pb.h>
+#include <stats/xy_plot_statistic.hpp>
 
 using namespace ksim::kcache;
 
@@ -11,6 +12,7 @@ knode::knode(actor_system& system, std::shared_ptr<kcache_global_state> global)
         : simulated_actor(system)
         , global(global)
 {
+    this->stats().stat<xy_plot_statistic>("daemon geographic distribution").record(std::get<0>(this->location), std::get<1>(this->location));
 }
 
 void knode::start()

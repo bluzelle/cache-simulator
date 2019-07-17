@@ -13,7 +13,7 @@ namespace ksim
         friend class simulated_actor;
 
     public:
-        activity(simulated_actor* owner, unsigned int id);
+        activity(simulated_actor* owner, unsigned int id, const std::string& name);
 
         virtual void start() = 0;
         virtual void handle_message(const userspace_message_t& msg) = 0;
@@ -37,6 +37,7 @@ namespace ksim
     private:
         simulated_actor* const owner;
         const unsigned int id;
+        const std::string name;
     };
 }
 

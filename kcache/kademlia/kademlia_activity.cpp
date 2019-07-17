@@ -1,14 +1,15 @@
 #include <kcache/kademlia/kademlia_activity.hpp>
+#include <stats/frequency_counter.hpp>
 
 using namespace ksim::kcache;
 
 kademlia_activity::kademlia_activity(simulated_actor* owner, unsigned int id,
                                      std::shared_ptr<kcache_global_state> global, bool advertise, std::optional<node_id_t> known_kid)
-        : activity(owner, id)
+        : activity(owner, id, "kademlia")
         , advertise(advertise)
         , k_id(known_kid.value_or(global->get_new_kid()))
         , seed_peers(global->get_contacts())
-        , peers(this->k_id, global->config.replication_factor, &this->log)
+        , peers(this->k_id, global->config.replication_factor, &this->log, this->stats())
         , config(global->config)
 {
     if(advertise)
@@ -192,6 +193,7 @@ void kademlia_activity::ingest(const kcache_node_reference& peer)
         kcache_message ping;
         ping.mutable_ping()->set_start_time(this->current_time());
         this->finalize_and_send_message(peer.address(), ping);
+        this->stats().stat<frequency_counter>("new kademlia peer tested").tick();
     }
 }
 
@@ -217,6 +219,7 @@ void kademlia_activity::finalize()
 {
     this->log << "kademlia activity with id " << this->k_id << " advertisement " << this->advertise << "\n";
     this->log << this->peers.to_s();
+    this->peers.finalize();
 }
 
 const kademlia_routing_table& kademlia_activity::routing_table()
