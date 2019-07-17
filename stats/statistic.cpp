@@ -1,5 +1,6 @@
 #include <stats/statistic.hpp>
 #include <cassert>
+#include <fstream>
 
 using namespace ksim;
 
@@ -46,4 +47,14 @@ std::experimental::filesystem::path statistic::script_path()
 bool statistic::graph_generated()
 {
     return this->graph_path_used;
+}
+
+void statistic::write_common_script_prefix()
+{
+    std::ofstream ss(this->script_path());
+
+    ss << "set term png size 1280, 960\n";
+    ss << "set output " << this->graph_path() << "\n";
+    ss << "set title '" << this->name << "'\n";
+
 }

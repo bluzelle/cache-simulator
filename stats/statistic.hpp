@@ -13,9 +13,9 @@ namespace ksim
 
         // notably we do not implement something like record(T t) here
 
-        virtual void finalize(){throw std::runtime_error("not implemented");};
         virtual ~statistic() = default;
 
+        virtual void finalize(){};
         virtual void summarize(std::ostream& /*strm*/){};
         virtual void report(){};
 
@@ -30,6 +30,7 @@ namespace ksim
         void update_time(unsigned long new_time);
 
     protected:
+        void write_common_script_prefix();
         std::string name;
         unsigned long current_time = 0;
 

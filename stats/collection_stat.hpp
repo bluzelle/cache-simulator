@@ -59,11 +59,8 @@ namespace ksim
                 fs << i << " " << this->data.at(i) << "\n";
             }
 
-            std::ofstream ss(this->script_path());
-
-            ss << "set term png size 1280, 960\n";
-            ss << "set output " << this->graph_path() << "\n";
-            ss << "set title '" << this->name << "'\n";
+            this->write_common_script_prefix();
+            std::ofstream ss(this->script_path(), std::ios::app);
             ss << "plot " << this->data_path() << " with points \n";
         }
 

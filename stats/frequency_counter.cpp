@@ -59,11 +59,9 @@ frequency_counter::report()
         avgf << pair.first << " " << pair.second << "\n";
     }
 
-    std::ofstream ss(this->script_path());
+    this->write_common_script_prefix();
+    std::ofstream ss(this->script_path(), std::ios::app);
 
-    ss << "set term png size 1280, 960\n";
-    ss << "set output " << this->graph_path() << "\n";
-    ss << "set title '" << this->name << "'\n";
     ss << "plot " << raw << " title 'raw frequency' with points, \\\n";
     ss << "     " << avg << " title 'moving average' with points\n";
 }
