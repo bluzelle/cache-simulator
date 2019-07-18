@@ -17,7 +17,7 @@ namespace ksim
         const double ymin = -200;
         const double ymax = 200;
         const double zmin = 0;
-        const double zmax = 50;
+        const double zmax = 40;
 
     private:
 
@@ -28,7 +28,7 @@ namespace ksim
         std::vector<location_t> placed_locations;
 
         const float break_chance = 0.07;
-        const float city_radius = 7;
+        const float city_radius = 4;
         unsigned int min_sites = 20;
     };
 }

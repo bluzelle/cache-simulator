@@ -38,8 +38,11 @@ void simulation::run()
 void simulation::finalize()
 {
     this->system.finalize();
+    this->global->finalize(this->stats);
+
     auto output_root = this->find_output_dir();
     std::experimental::filesystem::create_directory(output_root);
+
     this->stats.finalize(output_root);
 }
 

@@ -23,7 +23,7 @@ namespace ksim
         void report();
 
     private:
-        unsigned long total;
+        unsigned long total = 0;
         const unsigned long average_interval = 1000;
         std::map<unsigned long, unsigned long> counts;
         std::map<unsigned long, double> average_counts;

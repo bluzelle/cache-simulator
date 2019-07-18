@@ -83,7 +83,6 @@ void
 frequency_counter::summarize(std::ostream& os)
 {
     double mean = (1.0 * this->total) / (1.0 * this->current_time);
-    long last = this->counts.end()->second;
 
-    os << this->name << " mean rate " << mean << " final rate " << last << "\n";
+    os << this->name << " mean rate " << mean << " total count " << total << "\n";
 }

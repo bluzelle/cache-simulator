@@ -29,6 +29,8 @@ namespace ksim::kcache
         const std::set<actor_id_t>& find_authoratitive_stores(chunk_id_t);
         const std::set<actor_id_t>& find_caches(chunk_id_t);
 
+        void finalize(ksim::statistic_set& stats);
+
         const kcache_config& config;
 
         kcache_global_state(kcache_global_state const&) = delete;

@@ -2,6 +2,7 @@
 #include <ctime>
 #include <climits>
 #include <iostream>
+#include <stats/collection_stat.hpp>
 
 using namespace ksim::kcache;
 
@@ -122,4 +123,23 @@ const std::set<ksim::actor_id_t>&
 kcache_global_state::find_caches(ksim::chunk_id_t chunk)
 {
     return this->cache_locations[chunk];
+}
+
+void
+kcache_global_state::finalize(ksim::statistic_set& stats)
+{
+    std::map<actor_id_t, unsigned long> actor_load;
+    for (const auto& pair : this->authoratitive_store_locations)
+    {
+        for (const auto& actor : pair.second)
+        {
+            actor_load[actor]++;
+        }
+    }
+
+    for (const auto& pair : this->known_storage_kids)
+    {
+        stats.stat<collection_stat<unsigned long>>("authoratitive copies per node").record(actor_load[pair.first]);
+
+    }
 }
