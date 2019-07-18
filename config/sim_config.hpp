@@ -10,8 +10,8 @@ namespace ksim
     public:
         sim_config();
 
-        const int clients_count = 40000;//200000;
-        const int nodes_count = 2000;//10000;
+        const int clients_count = 5000;//200000;
+        const int nodes_count = 100;//10000;
 
         const long duration = 400000;//500000;
         const latency_model latency;

@@ -17,7 +17,7 @@ kcache_global_state::get_contacts()
     std::list<ksim::actor_id_t> points_of_contact;
     if (this->known_nodes.size() > 0)
     {
-        for (unsigned int i=0; i < this->config.replication_factor; i++)
+        for (unsigned int i=0; i < this->config.peers_bucket_size; i++)
         {
             auto choice = this->rand.next_int_inclusive<unsigned int>(0u, this->known_nodes.size() - 1);
             points_of_contact.push_back(this->known_nodes.at(choice));
@@ -96,7 +96,7 @@ kcache_global_state::find_authoratitive_stores(ksim::chunk_id_t chunk)
 
         auto start_sorted = potential_locations.begin();
         auto end_sorted = potential_locations.begin();
-        std::advance(end_sorted, this->config.replication_factor);
+        std::advance(end_sorted, this->config.authoratitive_copies);
         auto end_range = potential_locations.end();
 
         std::nth_element(start_sorted, end_sorted, end_range,
@@ -108,7 +108,7 @@ kcache_global_state::find_authoratitive_stores(ksim::chunk_id_t chunk)
             });
 
         std::set<actor_id_t> results;
-        for(unsigned int i=0; i<this->config.replication_factor; i++)
+        for(unsigned int i=0; i<this->config.authoratitive_copies; i++)
         {
             results.insert(potential_locations[i]);
         }

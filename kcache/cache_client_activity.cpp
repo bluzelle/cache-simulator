@@ -126,9 +126,12 @@ cache_client_activity::finalize()
               << " rtt on actors " << this->closest_authoratative_source << ", " << this->closest_cache << "\n";
 
     this->stats().stat<collection_stat<unsigned long>>("final authoratitive latency").record(this->closest_authoratative_source_latency);
+    this->stats().stat<collection_stat<unsigned long>>("final authoratitive latency for " + this->work.name).record(this->closest_authoratative_source_latency);
     auto cache = std::min(this->closest_cache_latency, this->closest_authoratative_source_latency);
     this->stats().stat<collection_stat<unsigned long>>("final cache latency").record(cache);
+    this->stats().stat<collection_stat<unsigned long>>("final cache latency for " + this->work.name).record(cache);
     this->stats().stat<collection_stat<unsigned long>>("final cache advantage").record(this->closest_authoratative_source_latency - cache);
+    this->stats().stat<collection_stat<unsigned long>>("final cache advantage for " + this->work.name).record(this->closest_authoratative_source_latency - cache);
 }
 
 void

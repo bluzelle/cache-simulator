@@ -10,7 +10,7 @@ namespace ksim
         virtual client_work_spec generate(location_model::location_t loc) override;
 
     private:
-        unsigned int total_chunks = 30;
+        unsigned int total_chunks = 50;
         std::map<unsigned int, chunk_id_t> chunks;
     };
 }

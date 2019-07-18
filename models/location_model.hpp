@@ -27,8 +27,8 @@ namespace ksim
 
         std::vector<location_t> placed_locations;
 
-        const float break_chance = 0.07;
-        const float city_radius = 4;
-        unsigned int min_sites = 20;
+        const float break_chance = 0.08;
+        const float city_radius = 5;
+        unsigned int min_sites = 10;
     };
 }

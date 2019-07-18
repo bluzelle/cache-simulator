@@ -11,11 +11,12 @@ namespace ksim::kcache
         const unsigned long cache_choice_update_interval = 10000;
         const unsigned long client_cache_request_interval = 10000;
 
-        const unsigned int replication_factor = 3;
+        const unsigned int authoratitive_copies = 2;
+        const unsigned int peers_bucket_size = 3;
         const unsigned int gossip_time_min = 2500;
         const unsigned int gossip_time_max = 10000;
 
-        const unsigned int cache_chunks_per_node = 8;
+        const unsigned int cache_chunks_per_node = 10;
     };
 
 }
