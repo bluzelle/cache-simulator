@@ -9,9 +9,9 @@ using namespace ksim;
 
 client_model::client_model(const location_model& location_model)
 {
-    this->types.push_back(std::make_pair(std::make_shared<eve_client_type>(), 5));
+    this->types.push_back(std::make_pair(std::make_shared<eve_client_type>(), 0));
     this->types.push_back(std::make_pair(std::make_shared<fortnite_client_type>(location_model), 20));
-    this->types.push_back(std::make_pair(std::make_shared<matchmaking_lobby_client_type>(location_model), 5));
+    this->types.push_back(std::make_pair(std::make_shared<matchmaking_lobby_client_type>(location_model), 0));
     this->types.push_back(std::make_pair(std::make_shared<random_client_type>(), 20));
     this->types.push_back(std::make_pair(std::make_shared<weather_client_type>(location_model), 20));
 }
