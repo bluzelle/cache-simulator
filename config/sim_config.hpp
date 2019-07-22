@@ -2,18 +2,19 @@
 
 #include <models/latency_model.hpp>
 #include <models/client_model.hpp>
+#include <options/options.hpp>
 
 namespace ksim
 {
     class sim_config
     {
     public:
-        sim_config();
+        sim_config(const options&);
 
-        const int clients_count = 500000;
-        const int nodes_count = 10000;
+        const int clients_count;
+        const int nodes_count;
 
-        const long duration = 500000;
+        const long duration;
         const latency_model latency;
         location_model location;
         client_model clients;

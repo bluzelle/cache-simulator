@@ -1,13 +1,27 @@
 #include <iostream>
 #include <sim/simulation.hpp>
 #include <config/sim_config.hpp>
+#include <options/options.hpp>
 
 using namespace ksim;
 
-int main(int, char**)
+int main(int argc, char** argv)
 {
-    sim_config config;
-    simulation sim(config);
+    if(argc < 2)
+    {
+        std::cerr << "no options files specified";
+        return -1;
+    }
+
+    options options;
+
+    for(int i=1; i<argc; i++)
+    {
+        options.merge(argv[i]);
+    }
+
+    sim_config config(options);
+    simulation sim(config, options);
 
     sim.run();
 }

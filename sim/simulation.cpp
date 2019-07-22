@@ -2,11 +2,13 @@
 #include <sim/simulation.hpp>
 #include <kcache/knode.hpp>
 #include <kcache/kclient.hpp>
+#include <fstream>
 
 using namespace ksim;
 
-simulation::simulation(sim_config config)
-    : config(std::move(config))
+simulation::simulation(sim_config config, const ksim::options& opt)
+    : options(opt)
+    , config(std::move(config))
     , system(this->config.latency, this->config.location, this->stats)
     , global(std::make_shared<kcache::kcache_global_state>(this->algo_config))
 {
@@ -42,6 +44,11 @@ void simulation::finalize()
 
     auto output_root = this->find_output_dir();
     std::experimental::filesystem::create_directory(output_root);
+
+    auto optpath = output_root / std::experimental::filesystem::path("config");
+    std::ofstream optfile(optpath);
+
+    optfile << this->options.get();
 
     this->stats.finalize(output_root);
 }

@@ -6,13 +6,14 @@
 #include <stats/statistic_set.hpp>
 #include <log/log.hpp>
 #include <experimental/filesystem>
+#include <options/options.hpp>
 
 namespace ksim
 {
     class simulation
     {
     public:
-        simulation(sim_config config);
+        simulation(sim_config config, const options& opt);
 
         void run();
 
@@ -22,6 +23,8 @@ namespace ksim
         void finalize();
 
         std::experimental::filesystem::path find_output_dir();
+
+        const ksim::options& options;
 
         sim_config config;
         actor_system system;

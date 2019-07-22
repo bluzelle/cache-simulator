@@ -39,6 +39,10 @@ find_package(Threads REQUIRED)
 include(FindProtobuf)
 find_package(Protobuf REQUIRED)
 
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(JSONCPP jsoncpp)
+link_libraries(${JSONCPP_LIBRARIES})
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(SYSTEM ${PROTOBUF_INCLUDE_DIR})
 
@@ -54,3 +58,4 @@ add_subdirectory(proto)
 add_subdirectory(random)
 add_subdirectory(stats)
 add_subdirectory(log)
+add_subdirectory(options)
