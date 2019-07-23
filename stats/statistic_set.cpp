@@ -3,7 +3,12 @@
 
 using namespace ksim;
 
-void 
+statistic_set::statistic_set(log_base& log_parent)
+    : log("statistic set", log_parent)
+{
+}
+
+void
 statistic_set::finalize(const std::experimental::filesystem::path& path)
 {
     auto summary_path = path / std::experimental::filesystem::path{"summary.txt"};

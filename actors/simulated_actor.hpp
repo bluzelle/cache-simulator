@@ -61,7 +61,7 @@ namespace ksim
 
         ksim::statistic_set& stats();
 
-        ksim::log log;
+        ksim::log_child log;
 
     private:
         void ensure_message_set_exists(unsigned long time);

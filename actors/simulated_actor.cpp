@@ -9,7 +9,7 @@ using namespace ksim;
 simulated_actor::simulated_actor(actor_system& system)
         : id(system.register_actor(this))
         , location(system.location.pick_location())
-        , log("actor" + std::to_string(this->id), &(system.log))
+        , log("actor" + std::to_string(this->id), system.log)
         , system(system)
 {
     this->stats().stat<xy_plot_statistic>("node geographic distribution").record(std::get<0>(this->location), std::get<1>(this->location));

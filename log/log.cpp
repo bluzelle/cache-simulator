@@ -3,25 +3,92 @@
 
 using namespace ksim;
 
-log::log(std::string name, std::optional<ksim::log*> parent)
+log_base::log_base(std::string name, std::optional<unsigned int> severity)
     : name(name)
-    , parent(parent)
+    , default_severity(severity.has_value() ? severity.value() : 3)
+    , current_severity(this->default_severity)
 {}
 
-void log::say(const std::string& message)
+void log_base::say(const std::string& message, std::optional<unsigned int> severity)
 {
-    this->say(message, "");
+    this->say(message, "", severity.has_value() ? severity.value() : this->current_severity);
 }
 
-void log::say(const std::string& message, const std::string& prefix)
+// I am very confused about why these are necessary...
+void log_child::say(const std::string& message, std::optional<unsigned int> severity)
 {
-    std::string my_prefix = this->name + "|" + prefix;
+    this->say(message, "", severity.has_value() ? severity.value() : this->current_severity);
+}
+void log_root::say(const std::string& message, std::optional<unsigned int> severity)
+{
+    this->say(message, "", severity.has_value() ? severity.value() : this->current_severity);
+}
 
-    if(this->parent.has_value())
-    {
-        this->parent.value()->say(message, my_prefix);
+void
+log_base::ingest(const std::string& message)
+{
+    this->buffer += message;
+    auto loc = this->buffer.find("\n");
+    if (loc == std::string::npos){
         return;
     }
+
+    this->say(this->buffer.substr(0, loc), this->current_severity);
+    this->buffer = this->buffer.substr(loc+1, this->buffer.size());
+    this->ingest("");
+}
+
+ksim::log_base&
+log_base::operator<<(const std::string& str)
+{
+    this->ingest(str);
+    return *this;
+}
+
+ksim::log_base&
+log_base::operator<<(const char* str)
+{
+    this->ingest(std::string(str));
+    return *this;
+}
+
+void
+log_base::set_prefix(const std::string& str)
+{
+    this->name = str;
+}
+
+log_base::severity_lock::severity_lock(log_base* owner, unsigned int val)
+    : owner(owner)
+{
+    this->to_restore = this->owner->current_severity;
+    this->owner->current_severity = val;
+}
+
+log_base::severity_lock::~severity_lock()
+{
+    this->owner->current_severity = this->to_restore;
+}
+
+log_base::severity_lock log_base::with_severity(unsigned int level)
+{
+    return severity_lock(this, level);
+}
+
+log_root::log_root(std::string name, const ksim::options& options, std::optional<unsigned int> severity)
+    : log_base(name, severity)
+    , options(options)
+{
+}
+
+void log_root::say(const std::string& message, const std::string& prefix, unsigned int severity)
+{
+    if (severity < this->options.get()["log_severity"].asUInt())
+    {
+        return;
+    }
+
+    std::string my_prefix = this->name + "|" + prefix;
 
     std::string result;
 
@@ -50,36 +117,15 @@ void log::say(const std::string& message, const std::string& prefix)
     std::cout << result;
 }
 
-void
-log::ingest(const std::string& message)
-{
-    this->buffer += message;
-    auto loc = this->buffer.find("\n");
-    if (loc == std::string::npos){
-        return;
-    }
 
-    this->say(this->buffer.substr(0, loc));
-    this->buffer = this->buffer.substr(loc+1, this->buffer.size());
-    this->ingest("");
+log_child::log_child(std::string name, ksim::log_base& parent, std::optional<unsigned int> severity)
+    : log_base(name, severity.has_value() ? severity : parent.default_severity)
+    , parent(parent)
+{
 }
 
-ksim::log&
-log::operator<<(const std::string& str)
+void log_child::say(const std::string& message, const std::string& prefix, unsigned int severity)
 {
-    this->ingest(str);
-    return *this;
-}
-
-ksim::log&
-log::operator<<(const char* str)
-{
-    this->ingest(std::string(str));
-    return *this;
-}
-
-void
-log::set_prefix(const std::string& str)
-{
-    this->name = str;
+    std::string my_prefix = this->name + "|" + prefix;
+    this->parent.say(message, my_prefix, severity);
 }

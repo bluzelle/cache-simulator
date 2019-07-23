@@ -7,7 +7,7 @@
 
 using namespace ksim::kcache;
 
-kademlia_routing_table::kademlia_routing_table(ksim::kcache::node_id_t id, unsigned int bucket_size, ksim::log* log_parent, ksim::statistic_set& stats)
+kademlia_routing_table::kademlia_routing_table(ksim::kcache::node_id_t id, unsigned int bucket_size, ksim::log_base& log_parent, ksim::statistic_set& stats)
     : my_id(id)
     , bucket_size(bucket_size)
     , log("peers", log_parent)

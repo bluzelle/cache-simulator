@@ -9,7 +9,7 @@ kademlia_activity::kademlia_activity(simulated_actor* owner, unsigned int id,
         , advertise(advertise)
         , k_id(known_kid.value_or(global->get_new_kid()))
         , seed_peers(global->get_contacts())
-        , peers(this->k_id, global->config.peers_bucket_size, &this->log, this->stats())
+        , peers(this->k_id, global->config.peers_bucket_size, this->log, this->stats())
         , config(global->config)
 {
     if(advertise)
@@ -149,7 +149,6 @@ void kademlia_activity::handle_find_neighborhood_response(const kcache_message& 
 
 void kademlia_activity::do_gossip()
 {
-    this->log.say("tick");
     for (const auto& peer : this->peers.random())
     {
         kcache_message request;

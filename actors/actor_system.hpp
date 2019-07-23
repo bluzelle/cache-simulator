@@ -13,7 +13,7 @@ namespace ksim
     class actor_system
     {
     public:
-        actor_system(const latency_model& latency, location_model& location, statistic_set& stats);
+        actor_system(const latency_model& latency, location_model& location, statistic_set& stats, log_base& log_parent);
 
         actor_id_t register_actor(simulated_actor* registrant);
 
@@ -28,7 +28,7 @@ namespace ksim
 
         ksim::statistic_set& stats;
 
-        ksim::log log{"actorsys"};
+        ksim::log_child log;
 
     private:
         void ensure_actors_set_exists(long time);

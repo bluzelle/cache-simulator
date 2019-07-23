@@ -12,6 +12,9 @@ namespace ksim
 {
     class simulation
     {
+    private:
+        ksim::log_root log;
+
     public:
         simulation(sim_config config, const options& opt);
 
@@ -34,7 +37,6 @@ namespace ksim
 
         std::list<std::unique_ptr<simulated_actor>> actors;
 
-        ksim::log log{"sim"};
     };
 }
 

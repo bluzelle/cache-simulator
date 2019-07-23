@@ -7,9 +7,11 @@
 using namespace ksim;
 
 simulation::simulation(sim_config config, const ksim::options& opt)
-    : options(opt)
+    : log("simulation", opt)
+    , stats(this->log)
+    , options(opt)
     , config(std::move(config))
-    , system(this->config.latency, this->config.location, this->stats)
+    , system(this->config.latency, this->config.location, this->stats, this->log)
     , global(std::make_shared<kcache::kcache_global_state>(this->algo_config))
 {
     this->log.say("building simulation");
@@ -55,7 +57,8 @@ void simulation::finalize()
 
 std::experimental::filesystem::path simulation::find_output_dir()
 {
-    auto root_output_dir = std::experimental::filesystem::current_path() / std::experimental::filesystem::path("results");
+    std::experimental::filesystem::path experiment_dir(this->options.get()["name"].asString());
+    auto root_output_dir = std::experimental::filesystem::current_path() / std::experimental::filesystem::path("results") / experiment_dir;
 
     if(std::experimental::filesystem::exists(root_output_dir) && !std::experimental::filesystem::is_directory(root_output_dir))
     {

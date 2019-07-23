@@ -12,6 +12,8 @@ namespace ksim
     class statistic_set
     {
     public:
+        statistic_set(ksim::log_base& log_parent);
+
         template <class T>
         T& stat(const std::string& name)
         {
@@ -31,7 +33,7 @@ namespace ksim
     private:
         std::map<std::string, std::unique_ptr<statistic>> stats;
         unsigned long time = 0;
-        ksim::log log{"statistic set"};
+        ksim::log_child log;
     };
 }
 
