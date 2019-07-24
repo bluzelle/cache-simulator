@@ -1,6 +1,6 @@
 $runs = ARGV.shift
 $work = []
-$wake_interval = 10
+$wake_interval = 300
 $max_concurrent = 8;
 
 $runs.to_i.times do 
@@ -32,12 +32,13 @@ until $work.empty?
   end
 
   task = $work.shift
-  puts "starting a run of #{task}"
 
   Thread.new do 
     $running_jobs_mutex.synchronize{ $running_jobs += 1 }
+    puts "starting a run of #{task}"
     `./run #{task} > /dev/null`
     $running_jobs_mutex.synchronize{ $running_jobs -= 1 }
+    puts "finished a run of #{task}"
   end
 
   sleep($wake_interval)

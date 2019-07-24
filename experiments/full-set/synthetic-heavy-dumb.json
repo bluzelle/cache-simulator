@@ -1,0 +1,30 @@
+{
+  "name": "synthetic-heavy-dumb",
+  "version": 1,
+
+  "log_severity": 3,
+
+  "blz_node_count": 1000,
+  "customer_node_count": 500000,
+  "duration": 500000,
+
+  "kcache_options": {
+    "cache_choice_update_interval": 10000,
+    "speculative_cache_request_interval": 10000,
+    "authoratitive_copies_per_chunk": 4,
+    "bucket_size": 3,
+    "kademlia_gossip_time_min": 2500,
+    "kademlia_gossip_time_max": 10000,
+    "cache_chunks_per_node": 0
+  },
+
+  "clients": [
+    {
+      "type": "fortnite_session",
+      "weight": 10,
+      "regions_x": 4,
+      "regions_y": 4,
+      "clients_per_session": 200
+    }
+  ]
+}
