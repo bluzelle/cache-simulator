@@ -6,7 +6,8 @@ add_library(models STATIC
         client_model.cpp client_model.hpp
         client_work_spec.hpp
         client_models/eve_client_type.cpp client_models/eve_client_type.hpp
-        client_models/fortnite_client_type.hpp client_models/fortnite_client_type.cpp
+        client_models/fortnite_region_client_type.hpp client_models/fortnite_region_client_type.cpp
+        client_models/fortnite_session_client_type.hpp client_models/fortnite_session_client_type.cpp
         client_models/matchmaking_lobby_client_type.hpp client_models/matchmaking_lobby_client_type.cpp
         client_models/random_client_type.cpp client_models/random_client_type.hpp
         client_models/region_model.cpp client_models/region_model.hpp

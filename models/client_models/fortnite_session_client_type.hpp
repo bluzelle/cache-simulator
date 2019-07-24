@@ -2,6 +2,7 @@
 
 #include <models/client_type.hpp>
 #include <models/client_models/region_model.hpp>
+#include <jsoncpp/json/json.h>
 
 namespace ksim
 {
@@ -18,18 +19,16 @@ namespace ksim
      * session chunks less commonly cached (maybe not at all if sessions are small), but if cached they are only cached
      * in population centres
      */
-    class fortnite_client_type : public client_type
+    class fortnite_session_client_type : public client_type
     {
     public:
-        fortnite_client_type(const location_model& location_model);
+        fortnite_session_client_type(const location_model& location_model, const Json::Value& spec);
         virtual client_work_spec generate(location_model::location_t loc) override;
 
     private:
         const region_model regions;
 
-        const unsigned int clients_per_session = 50;
-
-        std::map<region_model::key_t, chunk_id_t> global_chunks;
+        const unsigned int clients_per_session;
 
         std::map<region_model::key_t, chunk_id_t> sessions_building;
         std::map<region_model::key_t, unsigned int> slots_remaining;
