@@ -3,6 +3,7 @@
 #include <kcache/knode.hpp>
 #include <kcache/kclient.hpp>
 #include <fstream>
+#include <sys/stat.h>
 
 using namespace ksim;
 
@@ -61,25 +62,30 @@ std::experimental::filesystem::path simulation::find_output_dir()
     std::experimental::filesystem::path experiment_dir(this->options.get()["name"].asString());
     auto root_output_dir = std::experimental::filesystem::current_path() / std::experimental::filesystem::path("results") / experiment_dir;
 
-    if(std::experimental::filesystem::exists(root_output_dir) && !std::experimental::filesystem::is_directory(root_output_dir))
-    {
-        throw std::runtime_error("output dir is not a dir");
-    }
-
-    if(!std::experimental::filesystem::exists(root_output_dir))
-    {
-        std::experimental::filesystem::create_directory(root_output_dir);
-    }
+    std::experimental::filesystem::create_directories(root_output_dir);
 
     for(unsigned int i = 0; true; i++)
     {
-        auto p2 = root_output_dir / std::experimental::filesystem::path{std::to_string(i)};
-        if (!std::experimental::filesystem::exists(p2))
+        if (i > 10000)
         {
-            std::experimental::filesystem::create_directory(p2);
-            this->log << "output dir: " << std::string(p2.string()) << "\n";
-            return p2;
+            throw std::runtime_error("failed to create output directory");
         }
+
+        auto p2 = root_output_dir / std::experimental::filesystem::path{std::to_string(i)};
+
+        /* we use mkdir() because it errors when the directory already exists; this is not duplicated by filesystem::create_directory
+         * we want that behavior because it allows us to run multiple simulations in the same directory without concern:
+         * the filesystem will effectively synchronize them because exactly one process will sucessfully create each
+         * output directory, so each will be writing to a unique location
+         */
+        if (mkdir(p2.string().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH))
+        {
+            continue;
+        }
+
+        std::experimental::filesystem::create_directory(p2);
+        this->log << "output dir: " << std::string(p2.string()) << "\n";
+        return p2;
     }
 
 }
