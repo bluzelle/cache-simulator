@@ -1,7 +1,7 @@
 $runs = ARGV.shift
 $work = []
 $wake_interval = 300
-$max_concurrent = 8;
+$max_concurrent = 10;
 
 $runs.to_i.times do 
   ARGV.each{|spec| $work.push spec}
@@ -18,10 +18,10 @@ until $work.empty?
   avail = memdata[12].to_i
   perc = (100.0*avail)/total
 
-  puts "#{avail}/#{total} bytes free"
+  puts "#{avail}/#{total} bytes free (#{perc.to_i}%)"
   puts "#{$running_jobs} jobs currently running"
 
-  if perc < 0.5
+  if perc < 50
     puts "waiting for more memory"
     sleep($wake_interval)
   end
