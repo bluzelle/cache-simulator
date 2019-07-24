@@ -4,6 +4,7 @@
 #include <random/random.hpp>
 #include <models/client_type.hpp>
 #include <models/client_work_spec.hpp>
+#include <options/options.hpp>
 
 namespace ksim
 {
@@ -15,7 +16,7 @@ namespace ksim
         // there is no actual geographic correlation here
 
 
-        client_model(const location_model& location_model);
+        client_model(const location_model& location_model, const ksim::options& opt);
 
         client_work_spec get_workload(const location_model::location_t location);
 

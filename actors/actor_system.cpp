@@ -68,7 +68,7 @@ actor_system::run_until(long time)
         for (const auto& actor : to_act)
         {
             auto delta = this->id_map.at(actor)->process_messages_at(next_tick);
-            if (messages_processed / 10000 != (messages_processed+delta) / 10000)
+            if (messages_processed / 100000 != (messages_processed+delta) / 100000)
             {
                 this->log << messages_processed+delta << " total messages processed\n";
             }

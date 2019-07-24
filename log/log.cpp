@@ -89,6 +89,7 @@ void log_root::say(const std::string& message, const std::string& prefix, unsign
     }
 
     std::string my_prefix = this->name + "|" + prefix;
+    my_prefix = std::to_string(severity) + "|" + my_prefix;
 
     std::string result;
 

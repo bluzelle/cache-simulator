@@ -12,6 +12,7 @@ simulation::simulation(sim_config config, const ksim::options& opt)
     , options(opt)
     , config(std::move(config))
     , system(this->config.latency, this->config.location, this->stats, this->log)
+    , algo_config(opt)
     , global(std::make_shared<kcache::kcache_global_state>(this->algo_config))
 {
     this->log.say("building simulation");

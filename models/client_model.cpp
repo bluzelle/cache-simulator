@@ -4,16 +4,25 @@
 #include <models/client_models/matchmaking_lobby_client_type.hpp>
 #include <models/client_models/random_client_type.hpp>
 #include <models/client_models/weather_client_type.hpp>
+#include <functional>
 
 using namespace ksim;
 
-client_model::client_model(const location_model& location_model)
+client_model::client_model(const location_model& location_model, const ksim::options& opt)
 {
-    this->types.push_back(std::make_pair(std::make_shared<eve_client_type>(), 0));
-    this->types.push_back(std::make_pair(std::make_shared<fortnite_client_type>(location_model), 20));
-    this->types.push_back(std::make_pair(std::make_shared<matchmaking_lobby_client_type>(location_model), 0));
-    this->types.push_back(std::make_pair(std::make_shared<random_client_type>(), 0));
-    this->types.push_back(std::make_pair(std::make_shared<weather_client_type>(location_model), 0));
+    std::map<std::string, std::function<std::shared_ptr<ksim::client_type>()>> constructors;
+
+    constructors["eve"] = [&](){return std::make_shared<eve_client_type>();};
+    constructors["random"] = [&](){return std::make_shared<random_client_type>();};
+    constructors["matchmaking_lobby"] = [&](){return std::make_shared<matchmaking_lobby_client_type>(location_model);};
+    constructors["weather"] = [&](){return std::make_shared<weather_client_type>(location_model);};
+    constructors["fortnite"] = [&](){return std::make_shared<fortnite_client_type>(location_model);};
+
+    for(const auto& client : opt.get()["clients"])
+    {
+        auto ptr = constructors.at(client["type"].asString())();
+        this->types.push_back(std::make_pair(ptr, client["weight"].asUInt()));
+    }
 }
 
 client_work_spec
